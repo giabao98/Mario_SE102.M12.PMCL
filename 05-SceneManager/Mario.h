@@ -17,12 +17,13 @@
 #define MARIO_ACCEL_RUN_X	0.0007f
 #define MARIO_FRICTION		0.006f
 
-#define MARIO_JUMP_SPEED_Y		0.5f
-#define MARIO_JUMP_RUN_SPEED_Y	0.6f
+#define MARIO_JUMP_SPEED_Y		0.6f
+#define MARIO_JUMP_RUN_SPEED_Y	0.7f
 
 #define MARIO_GRAVITY			0.002f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.5f
+#define MARIO_SLOW_FALLING_SPEED  0.03f
 
 #define MARIO_MAX_SPEED_STACK	7
 
@@ -46,6 +47,8 @@
 #define MARIO_STATE_KICKKOOPAS	700
 #define MARIO_STATE_ATTACK	800
 
+#define MARIO_STATE_SLOW_FALLING	302
+#define MARIO_STATE_SLOW_FALLING_RELEASE	303
 
 #pragma region ANIMATION_ID
 
@@ -126,6 +129,8 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
+	bool IsSlowFalling;
+	DWORD SlowFallingTime;
 	bool isFly;
 	int speedStack;
 	
@@ -155,6 +160,7 @@ class CMario : public CGameObject
 
 public:
 	int untouchable;
+	bool CheckMarioIsOnPlatform() { return isOnPlatform; };
 
 	CMario(float x, float y) : CGameObject(x, y)
 	{

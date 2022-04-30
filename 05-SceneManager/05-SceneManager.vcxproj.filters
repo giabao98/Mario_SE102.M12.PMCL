@@ -13,30 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="map">
-      <UniqueIdentifier>{ffafcea8-8dfe-4839-9b31-65b1e9cf564a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="camera">
-      <UniqueIdentifier>{b8bb0929-a6c7-40c1-9ca1-df5ea58fbf62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gameEgine">
-      <UniqueIdentifier>{b656051d-dc98-4b26-a28d-9432853a495c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="scene">
-      <UniqueIdentifier>{4b02be45-7545-4f2f-b283-43f8eb9e7b7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="spirte">
-      <UniqueIdentifier>{029cde5e-806d-419e-a11b-d4ca7bf2df81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="platform">
-      <UniqueIdentifier>{f7ce087d-d796-4893-9642-e4fb1107b9e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="define">
-      <UniqueIdentifier>{48182555-e528-4511-a85b-8ee81a619d33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="object">
-      <UniqueIdentifier>{748bf0c8-9b48-4677-8045-704ac81000b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Brick">
       <UniqueIdentifier>{fe02c760-973a-4c81-a515-f3bf11508474}</UniqueIdentifier>
     </Filter>
@@ -48,6 +24,30 @@
     </Filter>
     <Filter Include="Enemy\NavigationBox">
       <UniqueIdentifier>{44b63899-3f8a-4071-9b89-ea8cd6fa1b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Spirte">
+      <UniqueIdentifier>{029cde5e-806d-419e-a11b-d4ca7bf2df81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{4b02be45-7545-4f2f-b283-43f8eb9e7b7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{f7ce087d-d796-4893-9642-e4fb1107b9e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{748bf0c8-9b48-4677-8045-704ac81000b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{ffafcea8-8dfe-4839-9b31-65b1e9cf564a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine">
+      <UniqueIdentifier>{b656051d-dc98-4b26-a28d-9432853a495c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Define">
+      <UniqueIdentifier>{48182555-e528-4511-a85b-8ee81a619d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{b8bb0929-a6c7-40c1-9ca1-df5ea58fbf62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,31 +88,31 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>map</Filter>
+      <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>camera</Filter>
+      <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>gameEgine</Filter>
+      <Filter>GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
-      <Filter>scene</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>spirte</Filter>
+      <Filter>Spirte</Filter>
     </ClCompile>
     <ClCompile Include="Sprites.cpp">
-      <Filter>spirte</Filter>
+      <Filter>Spirte</Filter>
     </ClCompile>
     <ClCompile Include="SampleKeyEventHandler.cpp">
-      <Filter>gameEgine</Filter>
+      <Filter>GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="Platform.cpp">
-      <Filter>platform</Filter>
+      <Filter>Platform</Filter>
     </ClCompile>
     <ClCompile Include="ColorBox.cpp">
-      <Filter>object</Filter>
+      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Brick</Filter>
@@ -188,53 +188,11 @@
     <ClInclude Include="Portal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>map</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>gameEgine</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>spirte</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>spirte</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>platform</Filter>
-    </ClInclude>
     <ClInclude Include="AssetIDs.h">
-      <Filter>define</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorBox.h">
-      <Filter>object</Filter>
-    </ClInclude>
-    <ClInclude Include="QuestionBrick.h">
-      <Filter>Brick</Filter>
-    </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Mushroom.h">
-      <Filter>Item</Filter>
+      <Filter>Define</Filter>
     </ClInclude>
     <ClInclude Include="NavigationBox.h">
       <Filter>Enemy\NavigationBox</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="Pipe.h">
       <Filter>Header Files</Filter>
@@ -246,6 +204,48 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MarioTail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
