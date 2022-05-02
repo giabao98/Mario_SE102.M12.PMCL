@@ -6,10 +6,10 @@
 
 #include "PlayScence.h"
 
-CGame * CGame::__instance = NULL;
+CGame* CGame::_instance = NULL;
 
 /*
-	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for 
+	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for
 	rendering 2D images
 	- hInst: Application instance handle
 	- hWnd: Application window handle
@@ -18,7 +18,7 @@ void CGame::Init(HWND hWnd)
 {
 	LPDIRECT3D9 d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
-	this->hWnd = hWnd;									
+	this->hWnd = hWnd;
 
 	D3DPRESENT_PARAMETERS d3dpp;
 
@@ -61,12 +61,30 @@ void CGame::Init(HWND hWnd)
 }
 
 /*
-	Utility function to wrap LPD3DXSPRITE::Draw 
+	Utility function to wrap LPD3DXSPRITE::Draw
 */
 void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
 {
-	D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
-	RECT r; 
+	D3DXVECTOR3 p(floor(x - cam_x), floor(y - cam_y), 0);
+	RECT r;
+	r.left = left;
+	r.top = top;
+	r.right = right;
+	r.bottom = bottom;
+	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+}
+/*
+* Overload for easy drawing on the screen
+*/
+void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, RECT r, int alpha)
+{
+	D3DXVECTOR3 p(floor(x - cam_x), floor(y - cam_y), 0);
+	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+}
+void CGame::DrawFixedPosition(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
+{
+	D3DXVECTOR3 p(x, y, 0);
+	RECT r;
 	r.left = left;
 	r.top = top;
 	r.right = right;
@@ -98,7 +116,7 @@ void CGame::InitKeyboard()
 	hr = di->CreateDevice(GUID_SysKeyboard, &didv, NULL);
 
 	// TO-DO: put in exception handling
-	if (hr != DI_OK) 
+	if (hr != DI_OK)
 	{
 		DebugOut(L"[ERROR] CreateDevice failed!\n");
 		return;
@@ -148,7 +166,7 @@ void CGame::InitKeyboard()
 
 void CGame::ProcessKeyboard()
 {
-	HRESULT hr; 
+	HRESULT hr;
 
 	// Collect all key states first
 	hr = didv->GetDeviceState(sizeof(keyStates), keyStates);
@@ -158,8 +176,8 @@ void CGame::ProcessKeyboard()
 		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
 		{
 			HRESULT h = didv->Acquire();
-			if (h==DI_OK)
-			{ 
+			if (h == DI_OK)
+			{
 				DebugOut(L"[INFO] Keyboard re-acquired!\n");
 			}
 			else return;
@@ -171,16 +189,14 @@ void CGame::ProcessKeyboard()
 		}
 	}
 
-	keyHandler->KeyState((BYTE *)&keyStates);
-
-
+	keyHandler->KeyState((BYTE*)&keyStates);
 
 	// Collect all buffered events
 	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
 	hr = didv->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), keyEvents, &dwElements, 0);
 	if (FAILED(hr))
 	{
-		//DebugOut(L"[ERROR] DINPUT::GetDeviceData failed. Error: %d\n", hr);
+		DebugOut(L"[ERROR] DINPUT::GetDeviceData failed. Error: %d\n", hr);
 		return;
 	}
 
@@ -208,108 +224,93 @@ CGame::~CGame()
 	Standard sweptAABB implementation
 	Source: GameDev.net
 */
-void CGame::SweptAABB(
-	float ml, float mt,	float mr, float mb,			
-	float dx, float dy,			
+float CGame::SweptAABB(
+	float ml, float mt, float mr, float mb,
+	float dx, float dy,
 	float sl, float st, float sr, float sb,
-	float &t, float &nx, float &ny)
+	float& nx, float& ny)
 {
-
-	float dx_entry, dx_exit, tx_entry, tx_exit;
-	float dy_entry, dy_exit, ty_entry, ty_exit;
-
-	float t_entry; 
-	float t_exit; 
-
-	t = -1.0f;			// no collision
-	nx = ny = 0;
-
-	//
 	// Broad-phase test 
-	//
-
 	float bl = dx > 0 ? ml : ml + dx;
 	float bt = dy > 0 ? mt : mt + dy;
 	float br = dx > 0 ? mr + dx : mr;
 	float bb = dy > 0 ? mb + dy : mb;
 
-	if (br < sl || bl > sr || bb < st || bt > sb) return;
+	// AABB Check
+	if (br < sl || bl > sr || bb < st || bt > sb) return -1.0f;
+	// moving object is not moving > obvious no collision
+	if (dx == 0 && dy == 0) return -1.0f;
 
-
-	if (dx == 0 && dy == 0) return;		// moving object is not moving > obvious no collision
-
-	if (dx > 0)
-	{
-		dx_entry = sl - mr; 
+	// Calculate entry, exit distance of two objects
+	float dx_entry, dx_exit, dy_entry, dy_exit;
+	if (dx > 0) {
+		dx_entry = sl - mr;
 		dx_exit = sr - ml;
 	}
-	else if (dx < 0)
-	{
+	else {
 		dx_entry = sr - ml;
-		dx_exit = sl- mr;
+		dx_exit = sl - mr;
 	}
 
-
-	if (dy > 0)
-	{
+	if (dy > 0) {
 		dy_entry = st - mb;
 		dy_exit = sb - mt;
 	}
-	else if (dy < 0)
-	{
+	else {
 		dy_entry = sb - mt;
 		dy_exit = st - mb;
 	}
 
-	if (dx == 0)
-	{
+	// Calculate entry, exit time of collision
+	float  ty_entry, ty_exit, tx_entry, tx_exit;
+	if (dx == 0) {
 		tx_entry = -999999.0f;
 		tx_exit = 999999.0f;
 	}
-	else
-	{
+	else {
 		tx_entry = dx_entry / dx;
 		tx_exit = dx_exit / dx;
 	}
-	
-	if (dy == 0)
-	{
+
+	if (dy == 0) {
 		ty_entry = -99999.0f;
 		ty_exit = 99999.0f;
 	}
-	else
-	{
+	else {
 		ty_entry = dy_entry / dy;
 		ty_exit = dy_exit / dy;
 	}
-	
 
-	if (  (tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
-
+	// Calculate the entry, exit time
+	float t_entry, t_exit;
 	t_entry = max(tx_entry, ty_entry);
 	t_exit = min(tx_exit, ty_exit);
-	
-	if (t_entry > t_exit) return; 
 
-	t = t_entry; 
+	if (tx_entry < 0.0f && ty_entry < 0.0f
+		|| tx_entry > 1.0f
+		|| ty_entry > 1.0f
+		|| t_entry > t_exit
+		) {
+		nx = 0.0f;
+		ny = 0.0f;
+		return -1.0f;
+	}
 
-	if (tx_entry > ty_entry)
-	{
+	else if (tx_entry > ty_entry) {
 		ny = 0.0f;
 		dx > 0 ? nx = -1.0f : nx = 1.0f;
 	}
-	else 
-	{
+	else {
 		nx = 0.0f;
-		dy > 0?ny = -1.0f:ny = 1.0f;
+		dy > 0 ? ny = -1.0f : ny = 1.0f;
 	}
-
+	return t_entry;
 }
 
-CGame *CGame::GetInstance()
+CGame* CGame::GetInstance()
 {
-	if (__instance == NULL) __instance = new CGame();
-	return __instance;
+	if (_instance == NULL) _instance = new CGame();
+	return _instance;
 }
 
 #define MAX_GAME_LINE 1024
@@ -336,7 +337,7 @@ void CGame::_ParseSection_SCENES(string line)
 
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
-	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
+	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
 	LPSCENE scene = new CPlayScene(id, path);
 	scenes[id] = scene;
@@ -370,13 +371,13 @@ void CGame::Load(LPCWSTR gameFile)
 		//
 		switch (section)
 		{
-			case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
-			case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
+		case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
+		case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
 		}
 	}
 	f.close();
 
-	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n",gameFile);
+	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
 
 	SwitchScene(current_scene);
 }
@@ -394,5 +395,6 @@ void CGame::SwitchScene(int scene_id)
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
-	s->Load();	
+	s->Load();
 }
+

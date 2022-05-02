@@ -1,59 +1,76 @@
 #pragma once
 #include "GameObject.h"
+#include "SuperItem.h"
 
 #define MARIO_WALKING_SPEED		0.15f 
-//0.1f
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_DEFLECT_SPEED 0.2f
 #define MARIO_GRAVITY			0.002f
 #define MARIO_DIE_DEFLECT_SPEED	 0.5f
 
-#define MARIO_STATE_IDLE			0
-#define MARIO_STATE_WALKING_RIGHT	100
-#define MARIO_STATE_WALKING_LEFT	200
-#define MARIO_STATE_JUMP			300
-#define MARIO_STATE_DIE				400
+#define ANI_SMALL_MARIO_IDLE_RIGHT		410
+#define ANI_SMALL_MARIO_IDLE_LEFT		411
+#define ANI_SMALL_MARIO_WALKING_RIGHT	412
+#define ANI_SMALL_MARIO_WALKING_LEFT	413
+#define ANI_SMALL_MARIO_JUMPING_RIGHT	414
+#define ANI_SMALL_MARIO_JUMPING_LEFT	415
 
-#define MARIO_ANI_BIG_IDLE_RIGHT		0
-#define MARIO_ANI_BIG_IDLE_LEFT			1
-#define MARIO_ANI_SMALL_IDLE_RIGHT		2
-#define MARIO_ANI_SMALL_IDLE_LEFT			3
+#define ANI_SUPER_MARIO_IDLE_RIGHT		400
+#define ANI_SUPER_MARIO_IDLE_LEFT		401
+#define ANI_SUPER_MARIO_WALKING_RIGHT	402
+#define ANI_SUPER_MARIO_WALKING_LEFT	403
+#define ANI_SUPER_MARIO_JUMPING_RIGHT	404
+#define ANI_SUPER_MARIO_JUMPING_LEFT	405
 
-#define MARIO_ANI_BIG_WALKING_RIGHT			4
-#define MARIO_ANI_BIG_WALKING_LEFT			5
-#define MARIO_ANI_SMALL_WALKING_RIGHT		6
-#define MARIO_ANI_SMALL_WALKING_LEFT		7
 
-#define MARIO_ANI_DIE				8
+#define ANI_RACOON_MARIO_IDLE_RIGHT		420
+#define ANI_RACOON_MARIO_IDLE_LEFT		421
+#define ANI_RACOON_MARIO_WALKING_RIGHT	422
+#define ANI_RACOON_MARIO_WALKING_LEFT	423
+#define ANI_RACOON_MARIO_JUMPING_RIGHT	426
+#define ANI_RACOON_MARIO_JUMPING_LEFT	427
 
-#define	MARIO_LEVEL_SMALL	1
-#define	MARIO_LEVEL_BIG		2
+#define ANI_MARIO_DIE				599
 
-#define MARIO_BIG_BBOX_WIDTH  15
-#define MARIO_BIG_BBOX_HEIGHT 27
+#define MARIO_TAIL_ANI_IDLE_RIGHT	1
 
-#define MARIO_SMALL_BBOX_WIDTH  13
-#define MARIO_SMALL_BBOX_HEIGHT 15
+#define	FORM_SMALL_MARIO	0
+#define	FORM_SUPER_MARIO	1
+#define	FORM_RACOON_MARIO	2
+
+#define BBW_RACOON_MARIO				22
+#define BBH_RACOON_MARIO				28
+#define BBW_SUPER_MARIO					15
+#define BBH_SUPER_MARIO					27
+#define BBW_SMALL_MARIO					13
+#define BBH_SMALL_MARIO					15
 
 #define MARIO_UNTOUCHABLE_TIME 5000
 
 
-class CMario : public CGameObject
+class Mario : public CGameObject
 {
-	int level;
+	static Mario* _instance;
+
+	int form;
+
 	int untouchable;
 	DWORD untouchable_start;
-
+	
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
 public: 
-	CMario(float x = 0.0f, float y = 0.0f);
+	static Mario* GetInstance();
+	unordered_map<string, bool> marioState;
+
+	Mario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 
-	void SetState(int state);
-	void SetLevel(int l) { level = l; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void LevelUp();
+	void setObjectState(ObjectState state);
+	void SetLevel(int l) { form = l; }
+	void StartUntouchable() { untouchable = 1; untouchable_start =(long) GetTickCount64(); }
 
 	void Reset();
 

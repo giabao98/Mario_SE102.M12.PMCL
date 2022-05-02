@@ -4,11 +4,11 @@
 #include <d3dx10.h>
 
 //
-// Warpper class to simplify texture manipulation. See also CGame::LoadTexture
+// Wrapper class to simplify texture manipulation. See also CGame::LoadTexture
 //
 class CTexture 
 {
-protected: 
+protected:
 	ID3D10Texture2D* _tex;
 	ID3D10ShaderResourceView* _rsview; 
 	int _width; 

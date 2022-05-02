@@ -1,34 +1,67 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include <assert.h>
 #include "Utils.h"
-
 #include "Mario.h"
 #include "Game.h"
-
 #include "Goomba.h"
 #include "Portal.h"
+#include "Ground.h"
+#include "ColorBlock.h"
+#include "QuestionBlock.h"
+#include "Item.h"
+#include "Coin.h"
 
-#define BLOCK_PUSH_FACTOR 0.4f
+#define  MarioAni CAnimationSets::GetInstance()->Get(MARIO_ANI)
 
-CMario::CMario(float x, float y) : CGameObject()
+Mario* Mario::_instance = NULL;
+Mario* Mario::GetInstance()
 {
-	level = MARIO_LEVEL_BIG;
-	untouchable = 0;
-	SetState(MARIO_STATE_IDLE);
-
-	start_x = x; 
-	start_y = y; 
-	this->x = x; 
-	this->y = y; 
+	if (_instance == NULL) {
+		_instance = new Mario();
+	}
+	return _instance;
 }
 
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+Mario::Mario(float x, float y) : CGameObject()
+{
+	form = FORM_SMALL_MARIO;
+	untouchable = 0;
+	setObjectState(ObjectState::MARIO_STATE_IDLE);
+
+	start_x = x;
+	start_y = y;
+	this->x = x;
+	this->y = y;
+
+	marioState["onGround"] = false;
+	marioState["isFalling"] = true;
+}
+
+void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += MARIO_GRAVITY*dt;
+	vy += MARIO_GRAVITY * dt;
+
+	// Bounding of map
+	int mw = 0, mh = 0;
+	mw = CGame::GetInstance()->getMapWidth();
+	mh = CGame::GetInstance()->getMapHeight();
+
+	if (x < 1) {
+		x = 1;
+	}
+	if (x > mw - TILE_SIZE) {
+		x = mw - TILE_SIZE;
+	}
+	if (y < 0) {
+		y = 0;
+	}
+	if (y > mh) {
+		isAlive = false;
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -36,100 +69,41 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state!=MARIO_STATE_DIE)
-		ScanCollions(coObjects, coEvents);
+	if (_state != ObjectState::MARIO_STATE_DIE)
+		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
 
 	// No collision occured, proceed normally
-	if (coEvents.size()==0) {
-		x += dx; 
+	if (coEvents.size() == 0)
+	{
+		x += dx;
 		y += dy;
 	}
-	else {
-
+	else
+	{
 		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0; 
+		float rdx = 0;
 		float rdy = 0;
 
-		LPCOLLISIONEVENT colX = NULL; 
-		LPCOLLISIONEVENT colY = NULL;
-		FilterCollision(coEvents, colX, colY);
+		// TODO: This is a very ugly designed function!!!!
 
-		if (colX != NULL && colY != NULL) {
-			if (colY->t < colX->t) { // if collision on Y first 
-				//push back on Y as usual
-				y += colY->t*dy + colY->ny*BLOCK_PUSH_FACTOR;
-				vy = 0; dy = 0;
+		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
+		//if (rdx != 0 && rdx!=dx)
+		//	x += nx*abs(rdx); 
 
-				colY->isDeleted = true;
+		// block every object first!
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 
-				coEventsResult.push_back(colY);
-
-				// check if still collide on X ?
-				LPCOLLISIONEVENT colX_ = SweptAABBEx(colX->obj);
-				if (colX_->t > 0 && colX_->t <= 1.0f) {
-					x += colX_->t*dx + colX_->nx*BLOCK_PUSH_FACTOR;
-					vx = 0; dx = 0; 
-
-					coEventsResult.push_back(colX_); // be aware of memory leak !!
-
-					DebugOut(L"Mario hit on X (case 2) \n");
-				}
-				else {
-					colX->isDeleted = true; 
-
-					// search "next" collision on X
-					LPCOLLISIONEVENT colX_next,colY_next;
-					FilterCollision(coEvents, colX_next, colY_next);
-					if (colX_next != NULL) {
-						x += colX_next->t*dx + colX_next->nx*BLOCK_PUSH_FACTOR;
-						vx = 0; dx = 0;
-
-						coEventsResult.push_back(colX_next);
-
-						DebugOut(L"Mario hit on X (case 3) \n");
-					}
-					else 
-						x += dx;
-				}
-			}
-			else { // collision on X first
-				//TODO: similar logic as Y first 
-				//push back both X & Y 
-				x += colX->t*dx + colX->nx*BLOCK_PUSH_FACTOR;
-				y += colY->t*dy + colY->ny*BLOCK_PUSH_FACTOR;
-
-				coEventsResult.push_back(colX);
-				coEventsResult.push_back(colY);
-			}
-		}
-		else if (colX!= NULL ) {
-			x += colX->t*dx + colX->nx*BLOCK_PUSH_FACTOR;
-			vx = 0;
-			dx = 0; 
-
-			y += dy;
-
-			coEventsResult.push_back(colX);
-			
-			DebugOut(L"Mario hit on X \n");
-		}
-		else { // colY != NULL
-			y += colY->t*dy + colY->ny*BLOCK_PUSH_FACTOR;
-			vy = 0;
-			dy = 0; 
-
-			coEventsResult.push_back(colY);
-
-
-			x += dx;
-		}
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
 
 		//
 		// Collision logic with other objects
@@ -137,137 +111,246 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
-			{
-				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
+			switch (e->obj->getType()) {
+			case ObjectType::BLOCK: {
+				auto block = dynamic_cast<Block*>(e->obj);
 				if (e->ny < 0)
-				{
-					if (goomba->GetState()!= GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -MARIO_JUMP_DEFLECT_SPEED;
-					}
+					marioState["onGround"] = true;
+
+				switch (block->getBlockType()) {
+				case BlockType::GROUND:
+				case BlockType::BRICK: {
+					Ground* ground = dynamic_cast<Ground*>(block);
+					break;
 				}
-				else if (e->nx != 0)
-				{
-					if (untouchable==0)
-					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
-						{
-							if (level > MARIO_LEVEL_SMALL)
-							{
-								level = MARIO_LEVEL_SMALL;
-								StartUntouchable();
-							}
-							else 
-								SetState(MARIO_STATE_DIE);
+				case BlockType::COLOR_BLOCK: {
+					ColorBlock* colorBlock = dynamic_cast<ColorBlock*>(block);
+					if (e->nx != 0) {
+						x += dx;
+					}
+					break;
+				}
+				case BlockType::QUESTION_BLOCK: {
+					QuestionBlock* questionBlock = dynamic_cast<QuestionBlock*>(block);
+					if (e->ny > 0) {
+						if (questionBlock->getItemType() == ItemType::COIN && !questionBlock->isEmpty) {
+							questionBlock->setObjectState(ObjectState::QUESTION_BLOCK_EMPTY);
+							Coin* c = dynamic_cast<Coin*>(questionBlock->getItem());
+							c->setObjectState(ObjectState::ITEM_VISIBLE);
+						}
+						if (questionBlock->getItemType() == ItemType::SUPER_ITEM && !questionBlock->isEmpty) {
+							questionBlock->setObjectState(ObjectState::QUESTION_BLOCK_EMPTY);
+							SuperItem* s = dynamic_cast<SuperItem*>(questionBlock->getItem());
+							s->setObjectState(ObjectState::ITEM_VISIBLE, this->form, this->x);
 						}
 					}
+					break;
 				}
-			} // if Goomba
-			else if (dynamic_cast<CPortal *>(e->obj))
-			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				}
+				break;
+			}
+			case ObjectType::ITEM: {
+				ItemType itemType = dynamic_cast<Item*>(e->obj)->getItemType();
+
+				switch (itemType)
+				{
+				case ItemType::SUPER_ITEM: {
+					e->obj->isAlive = false;
+					LevelUp();
+					break;
+				}
+				default:
+					break;
+				}
+			}
+			case ObjectType::ENEMY: {
+				if (dynamic_cast<CGoomba*>(e->obj)) {// if e->obj is Goomba 
+					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+					// jump on top >> kill Goomba and deflect a bit 
+					if (e->ny < 0)
+					{
+						if (goomba->getObjectState() != ObjectState::GOOMBA_STATE_DIE)
+						{
+							goomba->setObjectState(ObjectState::GOOMBA_STATE_DIE);
+							vy = -MARIO_JUMP_DEFLECT_SPEED;
+						}
+					}
+					else if (e->nx != 0)
+					{
+						if (untouchable == 0)
+						{
+							if (goomba->getObjectState() != ObjectState::GOOMBA_STATE_DIE)
+							{
+								if (form > FORM_SMALL_MARIO)
+								{
+									form = FORM_SMALL_MARIO;
+									StartUntouchable();
+								}
+								else
+									setObjectState(ObjectState::MARIO_STATE_DIE);
+							}
+						}
+					}
+				} // if Goomba
+				else if (dynamic_cast<CPortal*>(e->obj))
+				{
+					CPortal* p = dynamic_cast<CPortal*>(e->obj);
+					CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				}
+				break;
+			}
 			}
 		}
-
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
-
-	// clean up collision events
-	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void CMario::Render()
+void Mario::Render()
 {
-	int ani = -1;
-	if (state == MARIO_STATE_DIE)
-		ani = MARIO_ANI_DIE;
-	else
-	if (level == MARIO_LEVEL_BIG)
-	{
-		if (vx == 0)
-		{
-			if (nx>0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
-			else ani = MARIO_ANI_BIG_IDLE_LEFT;
-		}
-		else if (vx > 0) 
-			ani = MARIO_ANI_BIG_WALKING_RIGHT; 
-		else ani = MARIO_ANI_BIG_WALKING_LEFT;
-	}
-	else if (level == MARIO_LEVEL_SMALL)
-	{
-		if (vx == 0)
-		{
-			if (nx>0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
-			else ani = MARIO_ANI_SMALL_IDLE_LEFT;
-		}
-		else if (vx > 0)
-			ani = MARIO_ANI_SMALL_WALKING_RIGHT;
-		else ani = MARIO_ANI_SMALL_WALKING_LEFT;
-	}
-
-	int alpha = 255;
-	if (untouchable) alpha = 128;
-
-	animation_set->at(ani)->Render(x, y, alpha);
-
+	currentAnimation->Render(x, y);
 	RenderBoundingBox();
 }
 
-void CMario::SetState(int state)
+void Mario::setObjectState(ObjectState state)
 {
-	CGameObject::SetState(state);
-
-	switch (state)
-	{
-	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALKING_SPEED;
-		nx = 1;
-		break;
-	case MARIO_STATE_WALKING_LEFT: 
-		vx = -MARIO_WALKING_SPEED;
-		nx = -1;
-		break;
-	case MARIO_STATE_JUMP:
-		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		vy = -MARIO_JUMP_SPEED_Y;
-		break; 
-	case MARIO_STATE_IDLE: 
-		vx = 0;
-		break;
-	case MARIO_STATE_DIE:
+	CGameObject::setObjectState(state);
+	LPANIMATION ani = NULL;
+	switch (state) {
+	case ObjectState::MARIO_STATE_DIE: {
+		ani = MarioAni->Get(ANI_MARIO_DIE);
 		vy = -MARIO_DIE_DEFLECT_SPEED;
 		break;
 	}
+	case ObjectState::MARIO_STATE_JUMP: {
+		if (marioState["onGround"]) {
+			vy = -MARIO_JUMP_SPEED_Y;
+			marioState["onGround"] = false;
+		}
+		switch (form) {
+		case FORM_SMALL_MARIO: {
+			ani = (nx > 0) ?
+				MarioAni->Get(ANI_SMALL_MARIO_JUMPING_RIGHT) :
+				MarioAni->Get(ANI_SMALL_MARIO_JUMPING_LEFT);
+			break;
+		}
+		case FORM_SUPER_MARIO: {
+			ani = (nx > 0) ?
+				MarioAni->Get(ANI_SUPER_MARIO_JUMPING_RIGHT) :
+				MarioAni->Get(ANI_SUPER_MARIO_JUMPING_LEFT);
+			break;
+		}
+		case FORM_RACOON_MARIO: {
+			ani = (nx > 0) ?
+				MarioAni->Get(ANI_RACOON_MARIO_JUMPING_RIGHT) :
+				MarioAni->Get(ANI_RACOON_MARIO_JUMPING_LEFT);
+			break;
+		}
+		}
+		break;
+	}
+	case ObjectState::MARIO_STATE_WALKING_RIGHT: {
+		switch (form) {
+		case FORM_SMALL_MARIO: {
+			ani = MarioAni->Get(ANI_SMALL_MARIO_WALKING_RIGHT);
+			break;
+		}
+		case FORM_SUPER_MARIO: {
+			ani = MarioAni->Get(ANI_SUPER_MARIO_WALKING_RIGHT);
+			break;
+		}
+		case FORM_RACOON_MARIO: {
+			ani = MarioAni->Get(ANI_RACOON_MARIO_WALKING_RIGHT);
+			break;
+		}
+		}
+		vx = MARIO_WALKING_SPEED;
+		nx = 1;
+		break;
+	}
+	case ObjectState::MARIO_STATE_WALKING_LEFT: {
+		switch (form) {
+		case FORM_SMALL_MARIO: {
+			ani = MarioAni->Get(ANI_SMALL_MARIO_WALKING_LEFT);
+			break;
+		}
+		case FORM_SUPER_MARIO: {
+			ani = MarioAni->Get(ANI_SUPER_MARIO_WALKING_LEFT);
+			break;
+		}
+		case FORM_RACOON_MARIO: {
+			ani = MarioAni->Get(ANI_RACOON_MARIO_WALKING_LEFT);
+			break;
+		}
+		}
+		vx = -MARIO_WALKING_SPEED;
+		nx = -1;
+		break;
+	}
+	case ObjectState::MARIO_STATE_IDLE: {
+		vx = 0;
+		switch (form) {
+		case FORM_SMALL_MARIO: {
+			ani = (nx > 0) ?
+				MarioAni->Get(ANI_SMALL_MARIO_IDLE_RIGHT) :
+				MarioAni->Get(ANI_SMALL_MARIO_IDLE_LEFT);
+			break;
+		}
+		case FORM_SUPER_MARIO: {
+			ani = (nx > 0) ?
+				MarioAni->Get(ANI_SUPER_MARIO_IDLE_RIGHT) :
+				MarioAni->Get(ANI_SUPER_MARIO_IDLE_LEFT);
+			break;
+		}
+		case FORM_RACOON_MARIO: {
+			ani = (nx > 0) ?
+				MarioAni->Get(ANI_RACOON_MARIO_IDLE_RIGHT) :
+				MarioAni->Get(ANI_RACOON_MARIO_IDLE_LEFT);
+			break;
+		}
+		}
+		break;
+	}
+	}
+	DebugOut(L"%d\n", state);
+	setAnimation(ani);
 }
 
-void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void Mario::LevelUp()
+{
+	if (form == FORM_SMALL_MARIO) {
+		y -= BBH_SUPER_MARIO;
+		SetLevel(FORM_SUPER_MARIO);
+	}
+}
+
+void Mario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
-	top = y; 
-
-	if (level==MARIO_LEVEL_BIG)
-	{
-		right = x + MARIO_BIG_BBOX_WIDTH;
-		bottom = y + MARIO_BIG_BBOX_HEIGHT;
-	}
-	else
-	{
-		right = x + MARIO_SMALL_BBOX_WIDTH;
-		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
+	top = y;
+	switch (form) {
+	case FORM_SUPER_MARIO:
+		right = x + BBW_SUPER_MARIO;
+		bottom = y + BBH_SUPER_MARIO;
+		break;
+	case FORM_SMALL_MARIO:
+		right = x + BBW_SMALL_MARIO;
+		bottom = y + BBH_SMALL_MARIO;
+		break;
+	case FORM_RACOON_MARIO:
+		right = x + BBW_RACOON_MARIO;
+		bottom = y + BBH_RACOON_MARIO;
+		break;
 	}
 }
 
 /*
 	Reset Mario status to the beginning state of a scene
 */
-void CMario::Reset()
+void Mario::Reset()
 {
-	SetState(MARIO_STATE_IDLE);
-	SetLevel(MARIO_LEVEL_BIG);
+	setObjectState(ObjectState::MARIO_STATE_IDLE);
+	SetLevel(FORM_RACOON_MARIO);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 }

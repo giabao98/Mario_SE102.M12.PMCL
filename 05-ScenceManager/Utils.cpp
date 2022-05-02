@@ -1,7 +1,6 @@
 #include <Windows.h>
 
 #include "Utils.h"
-#include <iostream>
 
 void DebugOut(wchar_t *fmt, ...)
 {
@@ -12,11 +11,21 @@ void DebugOut(wchar_t *fmt, ...)
 	va_end(argp);
 	OutputDebugString(dbg_out);
 }
+// TODO: fromTextFile(wstring path)
+// to parse object from text, interface for all rectangle object( objects, map, camera, hud, ...)
+D3DCOLOR GetRGB(string r, string g, string b)
+{
+	int R = atoi(r.c_str());
+	int G = atoi(g.c_str());
+	int B = atoi(b.c_str());
+	return D3DCOLOR_XRGB(R, G, B);
+}
 
 vector<string> split(string line, string delimeter)
 {
 	vector<string> tokens;
-	size_t last = 0; size_t next = 0;
+	size_t last = 0;
+	size_t next = 0;
 	while ((next = line.find(delimeter, last)) != string::npos)
 	{
 		tokens.push_back(line.substr(last, next - last));
@@ -35,13 +44,13 @@ wstring ToWSTR(string st)
 	const char *str = st.c_str();
 
 	size_t newsize = strlen(str) + 1;
-	wchar_t * wcstring = new wchar_t[newsize];
+	wchar_t *wcstring = new wchar_t[newsize];
 	size_t convertedChars = 0;
 	mbstowcs_s(&convertedChars, wcstring, newsize, str, _TRUNCATE);
 
 	wstring wstr(wcstring);
 
-	// delete wcstring   // << can I ? 
+	// delete wcstring   // << can I ?
 	return wstr;
 }
 
@@ -53,12 +62,12 @@ LPCWSTR ToLPCWSTR(string st)
 	const char *str = st.c_str();
 
 	size_t newsize = strlen(str) + 1;
-	wchar_t * wcstring = new wchar_t[newsize];
+	wchar_t *wcstring = new wchar_t[newsize];
 	size_t convertedChars = 0;
 	mbstowcs_s(&convertedChars, wcstring, newsize, str, _TRUNCATE);
 
 	wstring *w = new wstring(wcstring);
 
-	// delete wcstring   // << can I ? 
+	// delete wcstring   // << can I ?
 	return w->c_str();
 }

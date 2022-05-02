@@ -1,7 +1,7 @@
 #include "Goomba.h"
 CGoomba::CGoomba()
 {
-	SetState(GOOMBA_STATE_WALKING);
+	setObjectState(ObjectState::GOOMBA_STATE_WALKING);
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -10,7 +10,7 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 	top = y;
 	right = x + GOOMBA_BBOX_WIDTH;
 
-	if (state == GOOMBA_STATE_DIE)
+	if (_state == ObjectState::GOOMBA_STATE_DIE)
 		bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
 	else 	
 		bottom = y + GOOMBA_BBOX_HEIGHT;
@@ -19,10 +19,6 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-
-	//
-	// TO-DO: make sure Goomba can interact with the world and to each of them too!
-	// 
 
 	x += dx;
 	y += dy;
@@ -39,26 +35,26 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CGoomba::Render()
 {
 	int ani = GOOMBA_ANI_WALKING;
-	if (state == GOOMBA_STATE_DIE) {
+	if (_state == ObjectState::GOOMBA_STATE_DIE) {
 		ani = GOOMBA_ANI_DIE;
 	}
 
-	animation_set->at(ani)->Render(x,y);
+	animation_set->Get(ani)->Render(x,y);
 
 	//RenderBoundingBox();
 }
 
-void CGoomba::SetState(int state)
+void CGoomba::setObjectState(ObjectState state)
 {
-	CGameObject::SetState(state);
+	CGameObject::setObjectState(state);
 	switch (state)
 	{
-		case GOOMBA_STATE_DIE:
+	case ObjectState::GOOMBA_STATE_DIE:
 			y += GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE + 1;
 			vx = 0;
 			vy = 0;
 			break;
-		case GOOMBA_STATE_WALKING: 
+	case ObjectState::GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
 	}
 }

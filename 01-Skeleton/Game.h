@@ -57,6 +57,5 @@ public:
 	int GetBackBufferHeight() { return backBufferHeight; }
 
 	static CGame * GetInstance();
-
 	~CGame();
 };

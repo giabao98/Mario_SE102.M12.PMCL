@@ -10,6 +10,9 @@ CSprite::CSprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEX
 	this->right = right;
 	this->bottom = bottom;
 	this->texture = tex;
+
+	width = abs(left - right);
+	height = abs(top - bottom);
 }
 
 CSprites * CSprites::__instance = NULL;
@@ -31,7 +34,7 @@ void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DT
 	LPSPRITE s = new CSprite(id, left, top, right, bottom, tex);
 	sprites[id] = s;
 
-	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
+	//DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
 }
 
 LPSPRITE CSprites::Get(int id)

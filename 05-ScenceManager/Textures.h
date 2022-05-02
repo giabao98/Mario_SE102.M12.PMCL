@@ -4,6 +4,8 @@
 
 using namespace std;
 
+#define TEX_MAP_ID 30
+
 /*
 	Manage texture database
 */
