@@ -1,13 +1,20 @@
-#include "Item.h"
+#pragma once
 
-class Coin : public Item {
+#include "GameObject.h"
+#include "Animation.h"
+#include "Animations.h"
+
+#define ID_ANI_COIN 11000
+
+#define	COIN_WIDTH 10
+#define COIN_BBOX_WIDTH 10
+#define COIN_BBOX_HEIGHT 16
+
+class CCoin : public CGameObject {
 public:
-	float destroy = 0;
-
-	Coin(ItemType type);
-	~Coin(){}
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	CCoin(float x, float y) : CGameObject(x, y) {}
 	void Render();
-	ItemType getItemType() { return itemType; }
-	void setObjectState(ObjectState s);
+	void Update(DWORD dt) {}
+	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	int IsBlocking() { return 0; }
 };

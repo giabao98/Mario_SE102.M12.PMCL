@@ -1,44 +1,17 @@
 #include "Coin.h"
-#define ANI_SPINNING_COIN 300
 
-Coin::Coin(ItemType type) : Item(type) {
-	itemType = ItemType::COIN;
-	setObjectState(ObjectState::ITEM_INVISIBLE);
-}
-
-void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	CGameObject::Update(dt);
-	
-	if (_state == ObjectState::ITEM_VISIBLE) {
-		vy += ITEM_GRAVITY * dt;
-	}
-	if (vy > 0 && y > destroy) {
-		isAlive = false;
-	}
-	y += dy;
-}
-
-void Coin::Render() {
-	if (_state == ObjectState::ITEM_VISIBLE) {
-		currentAnimation->Render(x, y);
-		RenderBoundingBox();
-	}
-}
-
-void Coin::setObjectState(ObjectState s)
+void CCoin::Render()
 {
-	CGameObject::setObjectState(s);
-	switch (s) {
-	case ObjectState::ITEM_VISIBLE: {
-		destroy = y - GAME_UNIT;
-		vy = -0.3f;
-		break;
-	}
-	case ObjectState::ITEM_INVISIBLE: {
-		setAnimation(CAnimationSets::GetInstance()->Get(4)->Get(ANI_SPINNING_COIN));
-		vy = 0;
-		break;
-	}
-	}
+	CAnimations* animations = CAnimations::GetInstance();
+	animations->Get(ID_ANI_COIN)->Render(x, y);
 
+	RenderBoundingBox();
+}
+
+void CCoin::GetBoundingBox(float& l, float& t, float& r, float& b)
+{
+	l = x - COIN_BBOX_WIDTH / 2;
+	t = y - COIN_BBOX_HEIGHT / 2;
+	r = l + COIN_BBOX_WIDTH;
+	b = t + COIN_BBOX_HEIGHT;
 }
