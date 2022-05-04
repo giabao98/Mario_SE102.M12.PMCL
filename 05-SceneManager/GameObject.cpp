@@ -15,8 +15,6 @@ CGameObject::CGameObject()
 	nx = 1;	
 	state = -1;
 	isDeleted = false;
-	type = 0;
-	objType = 0;
 }
 
 void CGameObject::RenderBoundingBox()
@@ -26,8 +24,8 @@ void CGameObject::RenderBoundingBox()
 
 	LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);
 
-	float l,t,r,b;
-	int ObjectType = 0;
+	float l,t,r,b; 
+
 	GetBoundingBox(l, t, r, b);
 	rect.left = 0;
 	rect.top = 0;
@@ -36,10 +34,8 @@ void CGameObject::RenderBoundingBox()
 
 	float cx, cy; 
 	Camera::GetInstance()->GetCamPos(cx, cy);
-	if (GetType() != 5)
-		CGame::GetInstance()->Draw(x - cx, y - cy, bbox, rect.left, rect.top, rect.right, rect.bottom, 1);
-	else
-		CGame::GetInstance()->Draw(x -8+width/2 - cx, y - cy, bbox, rect.left, rect.top, rect.right, rect.bottom, 1);
+
+	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, BBOX_ALPHA);
 }
 
 CGameObject::~CGameObject()

@@ -24,13 +24,12 @@ public:
 		this->spriteIdBegin = sprite_id_begin;
 		this->spriteIdMiddle = sprite_id_middle;
 		this->spriteIdEnd = sprite_id_end;
-		type = 5;
-		width = cellWidth * length;
 	}
 
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	void RenderBoundingBox();
 };
 
 typedef CPlatform* LPPLATFORM;
