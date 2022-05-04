@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="map">
+      <UniqueIdentifier>{ffafcea8-8dfe-4839-9b31-65b1e9cf564a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="camera">
+      <UniqueIdentifier>{b8bb0929-a6c7-40c1-9ca1-df5ea58fbf62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameEgine">
+      <UniqueIdentifier>{b656051d-dc98-4b26-a28d-9432853a495c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{4b02be45-7545-4f2f-b283-43f8eb9e7b7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="spirte">
+      <UniqueIdentifier>{029cde5e-806d-419e-a11b-d4ca7bf2df81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{f7ce087d-d796-4893-9642-e4fb1107b9e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="define">
+      <UniqueIdentifier>{48182555-e528-4511-a85b-8ee81a619d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{748bf0c8-9b48-4677-8045-704ac81000b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>gameEgine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>spirte</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>spirte</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleKeyEventHandler.cpp">
+      <Filter>gameEgine</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleKeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>gameEgine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>spirte</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>spirte</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetIDs.h">
+      <Filter>define</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBox.h">
+      <Filter>object</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

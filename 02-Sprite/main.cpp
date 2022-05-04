@@ -26,7 +26,6 @@
 
 
 #include "Mario.h"
-#include "Map.h"
 
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
@@ -34,20 +33,17 @@
 #define WINDOW_ICON_PATH L"mario.ico"
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255,0.0f)
-#define SCREEN_WIDTH 400
-#define SCREEN_HEIGHT 250
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 
 #define ID_TEX_MARIO 0
 #define ID_TEX_ENEMY 10
 #define ID_TEX_MISC 20
-#define ID_TEX_MAP 30
 
 #define TEXTURES_DIR L"textures"
 #define TEXTURE_PATH_MARIO TEXTURES_DIR "\\mario.png"
-#define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc.png"
+#define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc_transparent.png"
 #define TEXTURE_PATH_ENEMIES TEXTURES_DIR "\\enemies.png"
-#define TEXTURE_PATH_MAP TEXTURES_DIR "\\Map1.png"
-#define INFO_PATH_MAP TEXTURES_DIR "\\Map1.txt"
 
 CMario *mario;
 #define MARIO_START_X 10.0f
@@ -55,8 +51,6 @@ CMario *mario;
 #define MARIO_START_VX 0.1f
 
 CBrick *brick;
-
-Map* map;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -82,9 +76,6 @@ void LoadResources()
 	textures->Add(ID_TEX_MARIO, TEXTURE_PATH_MARIO);
 	//textures->Add(ID_ENEMY_TEXTURE, TEXTURE_PATH_ENEMIES, D3DCOLOR_XRGB(156, 219, 239));
 	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
-
-	// Load MAP TEXTURE
-	textures->Add(ID_TEX_MAP, TEXTURE_PATH_MAP);
 
 
 	CSprites * sprites = CSprites::GetInstance();
@@ -134,7 +125,6 @@ void LoadResources()
 	
 	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX);
 	brick = new CBrick(100.0f, 100.0f);
-	map = new Map(ID_TEX_MAP, INFO_PATH_MAP, 41, 176, 11, 11);
 }
 
 /*
@@ -155,7 +145,6 @@ void Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-
 	if (pD3DDevice != NULL)
 	{
 		// clear the background 
@@ -166,9 +155,6 @@ void Render()
 		// Use Alpha blending for transparent sprites
 		FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
-
-
-		map->Draw();
 
 		brick->Render();
 		mario->Render();
