@@ -31,6 +31,8 @@ protected:
 	float ax;				
 	float ay; 
 
+	bool ParaGoomba;
+
 	DWORD phaseTime;
 
 	ULONGLONG die_start;
@@ -43,7 +45,7 @@ protected:
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt);
 
 	void CalcGoombaMove() {
 		switch (goombaPhase) {
@@ -52,7 +54,7 @@ protected:
 				if (phaseTime == 0) {
 					phaseTime = GetTickCount64();
 				}
-				else if(GetTickCount64() - phaseTime > 2500) {
+				else if(GetTickCount64() - phaseTime > 2000) {
 					phaseTime = 0;
 					goombaPhase = GOOMBA_PHASE_JUMPING;
 				}
@@ -62,7 +64,7 @@ protected:
 				if (phaseTime == 0) {
 					phaseTime = GetTickCount64();
 				}
-				else if (GetTickCount64() - phaseTime > 2000) {
+				else if (GetTickCount64() - phaseTime > 1500) {
 					phaseTime = 0;
 					goombaPhase = GOOMBA_PHASE_FLYING;
 				}
@@ -81,8 +83,8 @@ protected:
 			}
 		}
 	}
-	int level,goombaPhase;
 public: 	
+	int level, goombaPhase;
 	CGoomba(float x, float y, int Level);
 	virtual void SetState(int state);
 };

@@ -8,6 +8,8 @@ CGoomba::CGoomba(float x, float y, int Level):CGameObject(x, y)
 	die_start = -1;
 	SetState(GOOMBA_STATE_WALKING);
 	level = Level;
+	if (level == PARA_GOOMBA)ParaGoomba = true;
+	else ParaGoomba = false;
 	goombaPhase = 1;
 	phaseTime = 0;
 }
@@ -36,7 +38,7 @@ void CGoomba::OnNoCollision(DWORD dt)
 	y += vy * dt;
 };
 
-void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
+void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 {
 	if (!e->obj->IsBlocking()) return; 
 	if (dynamic_cast<CGoomba*>(e->obj)) return; 
@@ -66,7 +68,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 	if (level == PARA_GOOMBA)CalcGoombaMove();
-	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 

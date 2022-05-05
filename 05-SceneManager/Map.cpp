@@ -62,7 +62,6 @@ void Map::Draw()
 		int firstcol = (int)Camera::GetInstance()->GetCamPosX() / 16;
 		if (firstcol < 0) { firstcol = 0; }
 		int lastcol = firstcol + 20;
-		DebugOut(L"Cmx: %d\n", GetMapWidth());
 		for (UINT i = 0; i < Num_Rows; i++)
 		{
 			for (UINT j = firstcol; j < lastcol; j++)

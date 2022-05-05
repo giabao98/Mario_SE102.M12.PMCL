@@ -83,5 +83,10 @@ public:
 
 	void Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
+	//bool CheckColEvent(LPCOLLISIONEVENT col) {
+	//	//if (col != NULL) { if (col->obj->objType)return true; else return false; }
+	//	return false;
+	//}
+
 	static CCollision* GetInstance();
 };

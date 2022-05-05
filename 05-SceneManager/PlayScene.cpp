@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Map.h"
 #include "ColorBox.h"
+#include "Koopas.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -148,7 +149,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CGoomba(x, y, goombaLevel);
 		break;
 	}
+	case OBJECT_TYPE_KOOPAS: {
+		int koopasLevel = atoi(tokens[3].c_str());
+		obj = new Koopas(x, y, koopasLevel);
+		break;
+	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
+	case OBJECT_TYPE_QUESTIONBRICK: {
+		obj = new QuestionBrick(x, y);
+		//Items.push_back(item);
+		break;
+	}
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
@@ -279,6 +290,14 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
+		
+		if (dynamic_cast<QuestionBrick*>(objects[i]))
+		{
+			QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
+			if (!Qbrick->innitItemSuccess)
+				AddItemToQBrick(Qbrick);
+		}
+
 		coObjects.push_back(objects[i]);
 	}
 
