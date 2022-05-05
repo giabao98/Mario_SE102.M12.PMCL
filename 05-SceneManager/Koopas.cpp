@@ -121,7 +121,7 @@ void Koopas::SetState(int state)
 		IsAttack = false;
 		break;
 	case KOOPAS_STATE_INSHELL_ATTACK:
-		vx = nx*KOOPAS_WALKING_SPEED * 3;
+		vx = nx*KOOPAS_WALKING_SPEED * 3.5;
 		InShell = true;
 		IsAttack = true;
 		break;

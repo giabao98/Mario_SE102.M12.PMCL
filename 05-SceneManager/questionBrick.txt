@@ -1,0 +1,18 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#KOOPAS
+#HaveNoItem
+7001	372	117	388	133	20
+
+#HaveItem
+7002	300	117	316	133	20
+7003	318	117	334	133	20
+7004	336	117	352	133	20
+7005	354	117	370	133	20
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#HaveNoItem
+70000	7001	100
+#HaveItem
+70001	7002	100	7003	100	7004	100	7005	100
