@@ -287,10 +287,6 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 			}
 			else // collision on X first
 			{
-				if (colX->obj->objType == 6)
-					x += dx;
-				else
-				{
 					x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
 					objSrc->SetPosition(x, y);
 
@@ -321,19 +317,14 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 					{
 						y += dy;
 					}
-				}
 			}
 		}
 		else
 		if (colX != NULL)
 		{ 
-			if (colX->obj->objType == 6)
-				x += dx;
-			else {
 				x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
 				y += dy;
 				objSrc->OnCollisionWith(colX);
-			}
 		}
 		else 
 			if (colY != NULL)
