@@ -72,14 +72,16 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->level == PARA_GOOMBA)
+		if (goomba->level == NORMAL_GOOMBA)
+		{
+			if (goomba->GetState() != GOOMBA_STATE_DIE) {
+				goomba->SetState(GOOMBA_STATE_DIE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+		}
+		else 
 		{
 			goomba->level = NORMAL_GOOMBA;
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}
-		else if (goomba->GetState() != GOOMBA_STATE_DIE)
-		{
-			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -133,7 +135,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	Koopas* koopas = dynamic_cast<Koopas*>(e->obj);
 	if (e->ny < 0)
 	{
-		if (koopas->level == NORMAL_KOOPAS)
+		if (koopas->level < PARA_KOOPAS)
 		{
 
 			switch (koopas->GetState()) 
@@ -387,7 +389,7 @@ void CMario::SetState(int state)
 		{
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
-			vx = 0; vy = 0.0f;
+			vx = 0; vy = 0.0f; ax = 0;
 			y +=MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;

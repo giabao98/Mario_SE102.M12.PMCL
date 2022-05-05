@@ -22,8 +22,16 @@
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
 
-#define ID_ANI_GOOMBA_WALKING 5000
-#define ID_ANI_GOOMBA_DIE 5001
+#define ID_ANI_GOOMBA_WALKING 20000
+#define ID_ANI_GOOMBA_DIE 21000
+
+#define ID_ANI_PARAGOOMBA_WALKING 20001
+#define ID_ANI_PARAGOOMBA_JUMPING 20002
+#define ID_ANI_PARAGOOMBA_FLYING 20003
+#define ID_ANI_PARAGOOMBA_NOWING_WALKING 20004
+#define ID_ANI_PARAGOOMBA_DEAD	21001
+
+
 
 class CGoomba : public CGameObject
 {
@@ -83,6 +91,17 @@ protected:
 			}
 		}
 	}
+
+	void GetParaGoombaAni(int& idAni) {
+		if (level == PARA_GOOMBA)
+		{
+			if (goombaPhase == GOOMBA_PHASE_WALKING)idAni = ID_ANI_PARAGOOMBA_WALKING;
+			else if (goombaPhase == GOOMBA_PHASE_JUMPING)idAni = ID_ANI_PARAGOOMBA_JUMPING;
+			else if (goombaPhase == GOOMBA_PHASE_FLYING)idAni = ID_ANI_PARAGOOMBA_FLYING;
+		}
+		else if(state == GOOMBA_STATE_WALKING)idAni = ID_ANI_PARAGOOMBA_NOWING_WALKING;
+		else idAni = ID_ANI_PARAGOOMBA_DEAD;
+	};
 public: 	
 	int level, goombaPhase;
 	CGoomba(float x, float y, int Level);

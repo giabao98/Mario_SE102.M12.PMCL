@@ -1,5 +1,6 @@
 #include "Koopas.h"
 #include "debug.h"
+#include "QuestionBrick.h"
 
 void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -19,7 +20,7 @@ void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += KOOPAS_GRAVITY * dt;
-	if (state == KOOPAS_STATE_WALKING)
+	if (state == KOOPAS_STATE_WALKING && level == SMART_KOOPAS)
 	{
 		if (vx > 0)NavBox->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
 		else NavBox->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
@@ -34,8 +35,11 @@ void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Koopas::Render()
 {
-	RenderBoundingBox();
-	NavBox->Render();
+	int aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
+	if (level == NORMAL_KOOPAS)GetKoopasAni(aniId);
+	else if (level == SMART_KOOPAS)GetRedKoopasAni(aniId);
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	//NavBox->Render();
 }
 
 void Koopas::OnNoCollision(DWORD dt)
@@ -57,7 +61,42 @@ void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 	{
 		vx = -vx;
 	}
+	if (dynamic_cast<QuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
 
+}
+
+void Koopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	QuestionBrick* QBrick = dynamic_cast<QuestionBrick*>(e->obj);
+
+	//Check qbrick
+	if (!QBrick->innitItemSuccess && state == KOOPAS_STATE_INSHELL_ATTACK) {
+		if (e->nx != 0)QBrick->SetState(QUESTION_BRICK_STATE_START_INNIT);
+	}
+}
+
+void Koopas::GetKoopasAni(int& IdAni)
+{
+	if (state == KOOPAS_STATE_WALKING)
+	{
+		if (vx > 0)IdAni = ID_ANI_KOOPAS_WALKING_RIGHT;
+		else IdAni = ID_ANI_KOOPAS_WALKING_LEFT;
+	}
+	else if (state == KOOPAS_STATE_INSHELL)IdAni = ID_ANI_KOOPAS_INSHELL;
+	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_KOOPAS_INSHELL_ATTACK;
+
+}
+
+void Koopas::GetRedKoopasAni(int& IdAni)
+{
+	if (state == KOOPAS_STATE_WALKING)
+	{
+		if (vx > 0)IdAni = ID_ANI_REDKOOPAS_WALKING_RIGHT;
+		else IdAni = ID_ANI_REDKOOPAS_WALKING_LEFT;
+	}
+	else if (state == KOOPAS_STATE_INSHELL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
+	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_REDKOOPAS_INSHELL_ATTACK;
 }
 
 Koopas::Koopas(float x, float y, int Level):CGameObject(x,y)
@@ -82,7 +121,7 @@ void Koopas::SetState(int state)
 		IsAttack = false;
 		break;
 	case KOOPAS_STATE_INSHELL_ATTACK:
-		vx = nx*KOOPAS_WALKING_SPEED * 2.5;
+		vx = nx*KOOPAS_WALKING_SPEED * 3;
 		InShell = true;
 		IsAttack = true;
 		break;

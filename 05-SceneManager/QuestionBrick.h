@@ -22,11 +22,12 @@ public:
 	int startY;
 	bool readyInnitItem;
 	bool innitItemSuccess;
+	int Item;
 
-
-	QuestionBrick(float x, float y ) : CGameObject(x, y) {
+	QuestionBrick(float x, float y, int item ) : CGameObject(x, y) {
 		startY = y;
 		readyInnitItem = innitItemSuccess = false;
+		Item = item;
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {
