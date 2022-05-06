@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "ColorBox.h"
+#include "Koopas.h"
 
 #include "Collision.h"
 
@@ -37,7 +38,7 @@ void CMario::OnNoCollision(DWORD dt)
 }
 
 
-void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 {
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
@@ -56,8 +57,12 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	else if (dynamic_cast<ColorBox*>(e->obj))
-		OnCollisionWithColorBox(e);
+	else if (dynamic_cast<QuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<Koopas*>(e->obj))
+		OnCollisionWithKoopas(e);
+	else if (e->obj->isitem)
+		OnCollisionWithItem(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -67,7 +72,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		if (goomba->level == PARA_GOOMBA)
+		{
+			goomba->level = NORMAL_GOOMBA;
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -108,10 +118,79 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 
-void CMario::OnCollisionWithColorBox(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
-
+	QuestionBrick* QBrick = dynamic_cast<QuestionBrick*>(e->obj);
+	
+	//Check qbrick
+	if (!QBrick->innitItemSuccess) {
+		if (e->ny > 0)QBrick->SetState(QUESTION_BRICK_STATE_START_INNIT);
+	}
 }
+
+void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	Koopas* koopas = dynamic_cast<Koopas*>(e->obj);
+	if (e->ny < 0)
+	{
+		if (koopas->level == NORMAL_KOOPAS)
+		{
+
+			switch (koopas->GetState()) 
+			{
+			case KOOPAS_STATE_WALKING:
+				koopas->SetState(KOOPAS_STATE_INSHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				break;
+			case KOOPAS_STATE_INSHELL:
+				koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				break;
+			case KOOPAS_STATE_INSHELL_ATTACK:
+				koopas->SetState(KOOPAS_STATE_INSHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	else // hit by Koopas
+	{
+		if (untouchable == 0)
+		{
+			if (koopas->IsAttack)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+			else if (e->nx != 0)
+			{
+				koopas->nx = nx;
+				koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
+			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<Mushroom*>(e->obj))
+	{
+		level = MARIO_LEVEL_BIG;
+		y -= 16;
+		e->obj->Delete();
+	}
+}
+
 
 
 
@@ -374,4 +453,6 @@ void CMario::SetLevel(int l)
 	}
 	level = l;
 }
+
+
 

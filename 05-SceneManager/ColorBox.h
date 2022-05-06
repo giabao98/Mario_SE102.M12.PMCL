@@ -21,5 +21,6 @@ public:
 	}
 	virtual int GetWidth() { return Width; };
 	virtual void Render();
+	virtual void DirectBlocking(int& l, int& t, int& r, int& b) { l = 0; t = 1; b = 0; r = 0; }
 };
 

@@ -37,6 +37,18 @@
     <Filter Include="object">
       <UniqueIdentifier>{748bf0c8-9b48-4677-8045-704ac81000b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Brick">
+      <UniqueIdentifier>{fe02c760-973a-4c81-a515-f3bf11508474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{7b637514-7ca4-4c1f-97cc-1049d40caffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{ffb3be02-2787-423a-8600-1123b02f5816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\NavigationBox">
+      <UniqueIdentifier>{44b63899-3f8a-4071-9b89-ea8cd6fa1b4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -64,9 +76,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Goomba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mario.cpp">
@@ -108,6 +117,21 @@
     <ClCompile Include="ColorBox.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
+      <Filter>Brick</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopas.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="NavigationBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -132,9 +156,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
@@ -187,6 +208,24 @@
     </ClInclude>
     <ClInclude Include="ColorBox.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
+      <Filter>Brick</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="NavigationBox.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
