@@ -1,0 +1,16 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#Mushroom
+8001	300	189	316	205	20
+
+#Coin
+9001	303	99	313	115	20
+9002	322	99	330	115	20
+9003	341	99	347	115	20
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#MUSHROOM
+80000	8001	100
+#COIN
+90000	9001	50	9002	50	9003	50

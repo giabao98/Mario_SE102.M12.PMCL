@@ -6,7 +6,6 @@
 #include "Brick.h"
 #include "Mario.h"
 #include "Goomba.h"
-#include "Item.h"
 //#include "Koopas.h"
 
 
@@ -39,18 +38,25 @@ public:
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 
-	void AddItemToQBrick(LPGAMEOBJECT obj) {
+	void AddItemToQBrick(LPGAMEOBJECT obj, int index) {
 		QuestionBrick* QBrick = dynamic_cast<QuestionBrick*>(obj);
 		CMario* mario = dynamic_cast<CMario*>(player);
 		float BrickX, BrickY;
 		obj->GetPosition(BrickX, BrickY);
 
-		if (QBrick->readyInnitItem )
-		{
+		if (QBrick->readyInnitItem)
+		 {
+			if (QBrick->Item > 1)
+			{
 				Mushroom* mushroom = new Mushroom(BrickX, BrickY);
 				mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
-				objects.push_back(mushroom);
-				QBrick->innitItemSuccess = true;
+				objects[index] = mushroom;
+				objects.push_back(QBrick);
+			}
+			else QBrick->InitCoin = true;
+
+			QBrick->innitItemSuccess = true;
+			
 		}
 	}
 

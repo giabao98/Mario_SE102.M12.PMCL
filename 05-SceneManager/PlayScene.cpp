@@ -295,8 +295,8 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<QuestionBrick*>(objects[i]))
 		{
 			QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
-			if (!Qbrick->innitItemSuccess && Qbrick->Item > 1)
-				AddItemToQBrick(Qbrick);
+			if (!Qbrick->innitItemSuccess)
+				AddItemToQBrick(Qbrick,i);
 		}
 
 		coObjects.push_back(objects[i]);
@@ -319,7 +319,7 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
-
+	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
 	Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
 
 	PurgeDeletedObjects();

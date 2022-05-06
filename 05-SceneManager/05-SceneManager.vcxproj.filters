@@ -120,17 +120,17 @@
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Brick</Filter>
     </ClCompile>
-    <ClCompile Include="Mushroom.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Koopas.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Goomba.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
     <ClCompile Include="NavigationBox.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Enemy\NavigationBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,20 +212,17 @@
     <ClInclude Include="QuestionBrick.h">
       <Filter>Brick</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Mushroom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Koopas.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Goomba.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Item</Filter>
+    </ClInclude>
     <ClInclude Include="NavigationBox.h">
-      <Filter>Header Files</Filter>
+      <Filter>Enemy\NavigationBox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
