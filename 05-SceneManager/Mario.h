@@ -34,6 +34,8 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
+#define MARIO_STATE_KICKKOOPAS	700
+
 
 #pragma region ANIMATION_ID
 
@@ -60,6 +62,8 @@
 
 #define ID_ANI_MARIO_DIE 999
 
+#define ID_ANI_MARIO_KICKKOOPAS_RIGHT	1701
+#define ID_ANI_MARIO_KICKKOOPAS_LEFT	1700
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -78,6 +82,9 @@
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
+
+#define ID_ANI_SMALLMARIO_KICKKOOPAS_RIGHT	1801
+#define ID_ANI_SMALLMARIO_KICKKOOPAS_LEFT	1800
 
 #pragma endregion
 
@@ -121,6 +128,8 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 
+	bool IsKickKoopas;
+	DWORD KickKoopasTime;
 	int GetAniIdBig();
 	int GetAniIdSmall();
 
@@ -131,7 +140,7 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-
+		IsKickKoopas = false;
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;

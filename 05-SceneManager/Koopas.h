@@ -48,6 +48,7 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
 	void GetKoopasAni(int& IdAni);
 	void GetRedKoopasAni(int& IdAni);

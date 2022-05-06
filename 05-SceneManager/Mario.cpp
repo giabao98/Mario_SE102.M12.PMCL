@@ -25,9 +25,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
+	if (IsKickKoopas)
+	{
+		if (GetTickCount64() - KickKoopasTime >= 200)
+		{
+			IsKickKoopas = false;
+		}
+	}
 	isOnPlatform = false;
-
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -177,6 +182,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			else if (e->nx != 0)
 			{
 				koopas->nx = nx;
+				SetState(MARIO_STATE_KICKKOOPAS);
 				koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
 			}
 		}
@@ -251,7 +257,12 @@ int CMario::GetAniIdSmall()
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
-
+	if (IsKickKoopas) {
+		if (nx > 0)
+			aniId = ID_ANI_SMALLMARIO_KICKKOOPAS_RIGHT;
+		else
+			aniId = ID_ANI_SMALLMARIO_KICKKOOPAS_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
 	return aniId;
@@ -313,7 +324,12 @@ int CMario::GetAniIdBig()
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
-
+	if (IsKickKoopas) {
+		if (nx > 0)
+			aniId = ID_ANI_MARIO_KICKKOOPAS_RIGHT;
+		else
+			aniId = ID_ANI_MARIO_KICKKOOPAS_LEFT;
+		}
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 
 	return aniId;
@@ -412,6 +428,12 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		break;
+	case MARIO_STATE_KICKKOOPAS:
+		vx = 0;
+		ax = 0;
+		KickKoopasTime = GetTickCount64();
+		IsKickKoopas = true;
 		break;
 	}
 

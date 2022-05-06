@@ -66,9 +66,6 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,6 +129,12 @@
     <ClCompile Include="NavigationBox.cpp">
       <Filter>Enemy\NavigationBox</Filter>
     </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -144,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Collision.h">
@@ -223,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="NavigationBox.h">
       <Filter>Enemy\NavigationBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #include "Koopas.h"
 #include "debug.h"
 #include "QuestionBrick.h"
+#include "Goomba.h"
 
 void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -50,19 +51,20 @@ void Koopas::OnNoCollision(DWORD dt)
 
 void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 {
-	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<Koopas*>(e->obj)) return;
 
-	if (e->ny != 0)
+	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
 	}
-	else if (e->nx != 0)
+	else if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = -vx;
+		nx = -nx;
 	}
 	if (dynamic_cast<QuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
 
 }
 
@@ -73,6 +75,20 @@ void Koopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	//Check qbrick
 	if (!QBrick->innitItemSuccess && state == KOOPAS_STATE_INSHELL_ATTACK) {
 		if (e->nx != 0)QBrick->SetState(QUESTION_BRICK_STATE_START_INNIT);
+	}
+}
+
+void Koopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	if (state == KOOPAS_STATE_INSHELL_ATTACK)
+	{
+		if (e->nx)
+		{
+			CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+			goomba->nx = nx;
+			if(goomba->GetState()!=GOOMBA_STATE_DIEBYSHELL)
+			goomba->SetState(GOOMBA_STATE_DIEBYSHELL);
+		}
 	}
 }
 
@@ -121,7 +137,7 @@ void Koopas::SetState(int state)
 		IsAttack = false;
 		break;
 	case KOOPAS_STATE_INSHELL_ATTACK:
-		vx = nx*KOOPAS_WALKING_SPEED * 3.5;
+		vx = nx*KOOPAS_WALKING_SPEED * 4;
 		InShell = true;
 		IsAttack = true;
 		break;

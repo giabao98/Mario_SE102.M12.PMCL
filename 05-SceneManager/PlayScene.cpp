@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "ColorBox.h"
 #include "Koopas.h"
+#include "Pipe.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -162,7 +163,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-
+	case OBJECT_TYPE_PIPE:{
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+		obj = new Pipe(x, y, width, height);
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -319,6 +325,9 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	
+	//dirty way have to improve
+	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
 	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
 	Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
 
