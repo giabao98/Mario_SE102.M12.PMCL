@@ -3,6 +3,8 @@
 mario.txt
 coin.txt
 cloud.txt
+goomba.txt
+koopas.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -11,11 +13,11 @@ cloud.txt
 
 # MARIO
 0	20	200
-#GOOMBA (1=NORMAL,2=PARA)
-#2	200	400	2
+#GOOMBA (1=NORMAL,2=SMART)
+2	200	400	2
 
 #KOOPAS (1=NORMAL,2=PARA)
-3	560	320	1
+3	250	396	2
 #Platform
 5	8	424	16	16	39	51000	52000	53000
 5	632	408	16	16	29	51000	52000	53000
@@ -29,11 +31,12 @@ cloud.txt
 5	2312	536	16	16	3	51000	51000	51000
 
 #QuestionBrick
-7	560	362
+7	200	408	2
+7	300	408	2
 #ColorBox
-6	264	392	48	48
-6	296	376	48	80
-6	440	392	80	48
+#6	264	392	48	48
+#6	296	376	48	80
+#6	440	392	80	48
 6	496	376	64	80
 6	544	360	64	112
 6	560	400	96	32

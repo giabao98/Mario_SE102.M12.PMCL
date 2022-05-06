@@ -156,7 +156,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_QUESTIONBRICK: {
-		obj = new QuestionBrick(x, y);
+		int item = atoi(tokens[3].c_str());
+		obj = new QuestionBrick(x, y, item);
 		//Items.push_back(item);
 		break;
 	}
@@ -294,7 +295,7 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<QuestionBrick*>(objects[i]))
 		{
 			QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
-			if (!Qbrick->innitItemSuccess)
+			if (!Qbrick->innitItemSuccess && Qbrick->Item > 1)
 				AddItemToQBrick(Qbrick);
 		}
 

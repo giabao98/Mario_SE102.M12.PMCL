@@ -47,13 +47,10 @@ public:
 
 		if (QBrick->readyInnitItem )
 		{
-			if (mario->GetMarioLevel() < MARIO_LEVEL_BIG)
-			{
 				Mushroom* mushroom = new Mushroom(BrickX, BrickY);
 				mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
 				objects.push_back(mushroom);
 				QBrick->innitItemSuccess = true;
-			}
 		}
 	}
 
