@@ -144,6 +144,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\New folder\mariobros3\05-SceneManager\FireBullet.cpp" />
+    <ClCompile Include="..\..\..\New folder\mariobros3\05-SceneManager\FirePiranhaPlant.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="ColorBox.cpp" />
@@ -173,6 +175,8 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\New folder\mariobros3\05-SceneManager\FireBullet.h" />
+    <ClInclude Include="..\..\..\New folder\mariobros3\05-SceneManager\FirePiranhaPlant.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Animations.h" />
