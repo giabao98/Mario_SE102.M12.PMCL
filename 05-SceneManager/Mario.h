@@ -117,7 +117,6 @@ class CMario : public CGameObject
 	float ay;				// acceleration on y 
 
 	int level; 
-	int untouchable; 
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
@@ -134,6 +133,8 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 
 public:
+	int untouchable;
+
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;

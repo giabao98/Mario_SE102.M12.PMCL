@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "Mario.h"
 #include "Goomba.h"
+#include "FirePiranhaPlant.h"
 //#include "Koopas.h"
 
 
@@ -17,6 +18,7 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> Bricks;
+	vector<FirePiranhaPlant*> FirePiranhaPlants;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
