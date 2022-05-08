@@ -65,7 +65,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 	else if (dynamic_cast<QuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<Koopas*>(e->obj))
-		OnCollisionWithKoopas(e);
+		OnCollisionWithKoopas(e); 
+	else if (dynamic_cast<FirePiranhaPlant*>(e->obj))
+		OnCollisionWithPlant(e);
 	else if (e->obj->isitem)
 		OnCollisionWithItem(e);
 }
@@ -198,6 +200,23 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 		e->obj->Delete();
 	}
 }
+
+void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+	if (untouchable == 0)
+	{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
+		}
+	}
 
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "QuestionBrick.h"
+#include "FirePiranhaPlant.h"
 
 #include "Animation.h"
 #include "Animations.h"
@@ -126,6 +127,7 @@ class CMario : public CGameObject
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 
 	bool IsKickKoopas;
 	DWORD KickKoopasTime;
