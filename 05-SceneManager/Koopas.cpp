@@ -28,7 +28,7 @@ void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		NavBox->Update(dt, coObjects);
 		float navX, navY;
 		NavBox->GetPosition(navX, navY);
-		if (navY - y >= 2)vx = -vx;
+		if (navY - y >= KOOPAS_NAVBOX_DISTANCE)vx = -vx;
 		
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -36,10 +36,11 @@ void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Koopas::Render()
 {
-	int aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
+	/*int aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
 	if (level == NORMAL_KOOPAS)GetKoopasAni(aniId);
 	else if (level == SMART_KOOPAS)GetRedKoopasAni(aniId);
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);*/
+	RenderBoundingBox();
 	//NavBox->Render();
 }
 

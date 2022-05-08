@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 
+
 using namespace std;
 
 class CGameObject;
@@ -61,6 +62,10 @@ public:
 		float& t,
 		float& nx,
 		float& ny);
+
+	bool CheckAABB(LPGAMEOBJECT objSrc, LPGAMEOBJECT objDest);
+
+
 
 	LPCOLLISIONEVENT SweptAABB(
 		LPGAMEOBJECT objSrc, 

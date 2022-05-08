@@ -115,6 +115,15 @@ void CCollision::SweptAABB(
 
 }
 
+bool CCollision::CheckAABB(LPGAMEOBJECT objSrc, LPGAMEOBJECT objDest)
+{
+		float Left, Top, Right, Bottom, left, top, right, bottom;
+		objSrc->GetBoundingBox(Left, Top, Right, Bottom); // Get bbox of objsrc
+		objDest->GetBoundingBox(left, top, right, bottom); // Get bbox of objColliable
+
+		return(!(Left > right || Top > bottom || Right < left || Bottom < top));
+}
+
 /*
 	Extension of original SweptAABB to deal with two moving objects
 */
