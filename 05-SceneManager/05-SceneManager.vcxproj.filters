@@ -141,6 +141,9 @@
     <ClCompile Include="FireBullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\New folder\mariobros3\05-SceneManager\MarioTail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -240,6 +243,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FireBullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\New folder\mariobros3\05-SceneManager\MarioTail.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
