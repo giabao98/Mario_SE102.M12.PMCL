@@ -18,25 +18,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx) && state != MARIO_STATE_IDLE) vx = maxVx;
-	if (state == MARIO_STATE_IDLE) {
-		vx = 0;
-	}
-
-	if (IsAttack)
-	{
-		if (nx > 0)
-			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH/2,y+5);
-		else
-			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 5);
-
-
-		tail->Update(dt, coObjects);
-		if (GetTickCount64() - AttackTime >= 300)
-		{
-			IsAttack = false;
-		}
-	}
-
+	
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
 	{
 		IncreaseSpeedStack();
@@ -60,6 +42,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	isOnPlatform = false;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+	if (IsAttack)
+	{
+		if (nx > 0)
+			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 5);
+		else
+			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 5);
+
+
+		tail->Update(dt, coObjects);
+		if (GetTickCount64() - AttackTime >= 300)
+		{
+			IsAttack = false;
+		}
+	}
+
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -289,9 +286,9 @@ int CMario::GetAniIdSmall()
 			}
 			else if (vx > 0)
 			{
-				if (ax < 0)
+				if (ax < 0 && state != MARIO_STATE_IDLE)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if (ax == MARIO_ACCEL_WALK_X || ax == -MARIO_ACCEL_SLOWING_DOWN_X)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 				{
@@ -303,9 +300,9 @@ int CMario::GetAniIdSmall()
 			}
 			else // vx < 0
 			{
-				if (ax > 0)
+				if (ax > 0 && state != MARIO_STATE_IDLE)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if (ax == -MARIO_ACCEL_WALK_X || ax == MARIO_ACCEL_SLOWING_DOWN_X)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 				{
@@ -491,7 +488,21 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_IDLE:
-		ax = 0;
+		
+		if (vx != 0) {
+			ax = -nx * MARIO_ACCEL_SLOWING_DOWN_X; // TODO: To constant - the slowing down speed
+			if (nx == 1 && vx < 0) {
+				vx = 0;
+				maxVx = 0;
+				ax = 0;
+			}
+			if (nx == -1 && vx > 0) {
+				vx = 0;
+				maxVx = 0;
+				ax = 0;
+			}
+		}
+
 		break;
 
 	case MARIO_STATE_DIE:
