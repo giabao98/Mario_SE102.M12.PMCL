@@ -16,5 +16,6 @@ height	240
 10	textures\enemies.png
 11	textures\enemiesFlip.png
 12	textures\enemies2.png
+13	textures\plant.png
 20	textures\misc.png
 9000	map\Map1.png

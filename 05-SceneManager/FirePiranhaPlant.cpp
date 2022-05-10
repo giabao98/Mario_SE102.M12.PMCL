@@ -44,11 +44,37 @@ void FirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void FirePiranhaPlant::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
+	aniId = -1;
+	GetAniFirePlant();
+	CAnimations* animations = CAnimations::GetInstance();
+	animations->Get(aniId)->Render(x, y);
 	if (fireBullet->isActivate)
 	{
 		fireBullet->Render();
 	}
+}
+
+void FirePiranhaPlant::GetAniFirePlant()
+{
+	if (x > enemyX) {
+		if (y == minY) {
+			if (enemyY < minY)aniId = ID_ANI_FIREPLANT_ATTACK_LEFT_UP;
+			else aniId = ID_ANI_FIREPLANT_ATTACK_LEFT_DOWN;
+		}
+		else if (enemyY < minY)aniId = ID_ANI_FIREPLANT_LEFT_UP;
+		else aniId = ID_ANI_FIREPLANT_LEFT_DOWN;
+	}
+	else {
+		if (y == minY) {
+			if (enemyY < minY)aniId = ID_ANI_FIREPLANT_ATTACK_RIGHT_UP;
+			else aniId = ID_ANI_FIREPLANT_ATTACK_RIGHT_DOWN;
+		}
+		else if (enemyY < minY)aniId = ID_ANI_FIREPLANT_RIGHT_UP;
+		else aniId = ID_ANI_FIREPLANT_RIGHT_DOWN;
+	}
+
+	if (aniId == -1) aniId = ID_ANI_FIREPLANT_LEFT_DOWN;
 }
 
 void FirePiranhaPlant::SetState(int state)
