@@ -9,6 +9,8 @@ Camera::Camera()
 	cam_vy = 0.0;
 }
 
+
+
 void Camera::Update(DWORD dt)
 {
 	if (AutoMove < 1)
