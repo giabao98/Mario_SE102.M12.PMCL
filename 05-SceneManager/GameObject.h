@@ -18,7 +18,6 @@ class CGameObject
 {
 protected:
 
-	float y;
 
 	float vx;
 	float vy;
@@ -32,6 +31,7 @@ protected:
 public: 
 	int nx;
 	float x;
+	float y;
 
 	bool isitem;
 	int objType;

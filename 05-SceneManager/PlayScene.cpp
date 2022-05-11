@@ -162,6 +162,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		//Items.push_back(item);
 		break;
 	}
+	case OBJECT_TYPE_FIREPIRANHAPLANT: {FirePiranhaPlant* fplant = new FirePiranhaPlant(x, y); FirePiranhaPlants.push_back(fplant); break; }
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_PIPE:{
 		int width = atoi(tokens[3].c_str());
@@ -209,12 +210,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
 	}
+	if (object_type != OBJECT_TYPE_FIREPIRANHAPLANT)
 
-	// General object setup
-	obj->SetPosition(x, y);
+	{// General object setup
+		obj->SetPosition(x, y);
 
-
-	objects.push_back(obj);
+		objects.push_back(obj);
+	}
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -295,6 +297,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT> Mario;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
 		
@@ -306,6 +309,12 @@ void CPlayScene::Update(DWORD dt)
 		}
 
 		coObjects.push_back(objects[i]);
+	}
+	Mario.push_back(objects[0]);
+
+	for (size_t i = 0; i < FirePiranhaPlants.size(); i++) {
+		FirePiranhaPlants[i]->GetEnemyPos(player->x, player->y);
+		FirePiranhaPlants[i]->Update(dt, &Mario);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
@@ -339,6 +348,9 @@ void CPlayScene::Render()
 	map->Draw();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	for (size_t i = 0; i < FirePiranhaPlants.size(); i++) {
+		FirePiranhaPlants[i]->Render();
+	}
 }
 
 /*

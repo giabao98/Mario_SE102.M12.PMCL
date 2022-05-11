@@ -135,10 +135,10 @@
     <ClCompile Include="Pipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\New folder\mariobros3\05-SceneManager\FireBullet.cpp">
+    <ClCompile Include="FirePiranhaPlant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\New folder\mariobros3\05-SceneManager\FirePiranhaPlant.cpp">
+    <ClCompile Include="FireBullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -236,10 +236,10 @@
     <ClInclude Include="Pipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\New folder\mariobros3\05-SceneManager\FireBullet.h">
+    <ClInclude Include="FirePiranhaPlant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\New folder\mariobros3\05-SceneManager\FirePiranhaPlant.h">
+    <ClInclude Include="FireBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
