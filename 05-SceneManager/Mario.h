@@ -99,6 +99,30 @@
 #define ID_ANI_SMALLMARIO_KICKKOOPAS_RIGHT	1801
 #define ID_ANI_SMALLMARIO_KICKKOOPAS_LEFT	1800
 
+#define ID_ANI_RACOON_IDLE_RIGHT 1900
+#define ID_ANI_RACOON_IDLE_LEFT 1901
+
+#define ID_ANI_RACOON_WALKING_RIGHT 1902
+#define ID_ANI_RACOON_WALKING_LEFT 1903
+
+#define ID_ANI_RACOON_JUMP_WALK_RIGHT 1904
+#define ID_ANI_RACOON_JUMP_WALK_LEFT 1905
+
+#define ID_ANI_RACOON_FALLING_RIGHT 1906
+#define ID_ANI_RACOON_FALLING_LEFT 1907
+
+#define ID_ANI_RACOON_RUNNING_RIGHT 1908
+#define ID_ANI_RACOON_RUNNING_LEFT 1909
+
+#define ID_ANI_RACOON_FLYING_RIGHT 1910
+#define ID_ANI_RACOON_FLYING_LEFT 1911
+
+#define ID_ANI_RACOON_SITTING_RIGHT 1912
+#define ID_ANI_RACOON_SITTING_LEFT 1913
+
+#define ID_ANI_RACOON_BRACE_RIGHT 1914
+#define ID_ANI_RACOON_BRACE_LEFT 1915
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -108,6 +132,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define	MARIO_LEVEL_RACOON	3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -157,6 +182,7 @@ class CMario : public CGameObject
 	DWORD KickKoopasTime;
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdRacoon();
 
 public:
 	int untouchable;
@@ -177,6 +203,7 @@ public:
 		speedStack = 0;
 		AttackTime = SpeedStackTime = 0;
 		tail = new MarioTail();
+		level = MARIO_LEVEL_RACOON;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

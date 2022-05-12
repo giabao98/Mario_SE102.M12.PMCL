@@ -332,6 +332,90 @@ int CMario::GetAniIdSmall()
 	return aniId;
 }
 
+int CMario::GetAniIdRacoon()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (vy >= 0)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_RACOON_FALLING_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_FALLING_LEFT;
+			}
+			else {
+				if (nx >= 0)
+					aniId = ID_ANI_RACOON_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
+			}
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_RACOON_SITTING_RIGHT;
+			else
+				aniId = ID_ANI_RACOON_SITTING_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
+				else aniId = ID_ANI_RACOON_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax == -MARIO_ACCEL_WALK_X || ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_RACOON_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_RACOON_WALKING_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+				{
+					if (speedStack == MARIO_MAX_SPEED_STACK)
+						aniId = ID_ANI_RACOON_RUNNING_RIGHT;
+					else
+						aniId = ID_ANI_RACOON_WALKING_RIGHT;
+				}
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_MARIO_BRACE_LEFT;
+				else if (ax == MARIO_ACCEL_WALK_X || ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_RACOON_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+				{
+					if (speedStack == MARIO_MAX_SPEED_STACK)
+						aniId = ID_ANI_RACOON_RUNNING_LEFT;
+					else
+						aniId = ID_ANI_RACOON_WALKING_LEFT;
+				}
+				else if (ax == MARIO_ACCEL_SLOWING_DOWN_X)
+					aniId = ID_ANI_MARIO_IDLE_LEFT;
+			}
+	if (IsKickKoopas) {
+		if (nx > 0)
+			aniId = ID_ANI_MARIO_KICKKOOPAS_RIGHT;
+		else
+			aniId = ID_ANI_MARIO_KICKKOOPAS_LEFT;
+	}
+	//if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
+
+	return aniId;
+}
+
 
 //
 // Get animdation ID for big Mario
@@ -420,6 +504,8 @@ void CMario::Render()
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_RACOON)
+		aniId = GetAniIdRacoon();
 
 	animations->Get(aniId)->Render(x, y);
 
