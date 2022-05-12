@@ -24,6 +24,8 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	void OnCollisionWithGoomba(LPGAMEOBJECT& obj);
+	void OnCollisionWithQuestionBrick(LPGAMEOBJECT& obj);
+	void OnCollisionWithKoopas(LPGAMEOBJECT& obj);
 
 public:
 	int level, goombaPhase;
