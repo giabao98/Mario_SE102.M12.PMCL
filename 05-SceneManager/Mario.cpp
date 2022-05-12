@@ -19,6 +19,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (abs(vx) > abs(maxVx) && state != MARIO_STATE_IDLE) vx = maxVx;
 
+	if (state == MARIO_STATE_IDLE) {
+		if (nx > 0 && vx < 0) { vx = 0; ax = 0; }
+		else if (nx < 0 && vx > 0) { vx = 0; ax = 0; }
+	}
+
 	if (IsSlowFalling)
 	{
 		if (GetTickCount64() - SlowFallingTime >= 150)
@@ -388,6 +393,8 @@ int CMario::GetAniIdRacoon()
 					else
 						aniId = ID_ANI_RACOON_WALKING_RIGHT;
 				}
+				else if (ax == -MARIO_ACCEL_SLOWING_DOWN_X)
+					aniId = ID_ANI_RACOON_WALKING_RIGHT;
 			}
 			else // vx < 0
 			{
@@ -403,7 +410,7 @@ int CMario::GetAniIdRacoon()
 						aniId = ID_ANI_RACOON_WALKING_LEFT;
 				}
 				else if (ax == MARIO_ACCEL_SLOWING_DOWN_X)
-					aniId = ID_ANI_MARIO_IDLE_LEFT;
+					aniId = ID_ANI_RACOON_WALKING_LEFT;
 			}
 	if (IsKickKoopas) {
 		if (nx > 0)
@@ -412,6 +419,11 @@ int CMario::GetAniIdRacoon()
 			aniId = ID_ANI_MARIO_KICKKOOPAS_LEFT;
 	}
 	//if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
+	if (aniId == -1) {
+		aniId = ID_ANI_RACOON_IDLE_RIGHT;
+	}
+	if (nx < 0 && ax > 0 && vx > 0)
+		DebugOut(L"AX %f VX %f\n", ax, vx);
 
 	return aniId;
 }
@@ -585,16 +597,6 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		if (vx != 0) {
 			ax = -nx * MARIO_ACCEL_SLOWING_DOWN_X; // TODO: To constant - the slowing down speed
-			if (nx == 1 && vx < 0) {
-				vx = 0;
-				maxVx = 0;
-				ax = 0;
-			}
-			if (nx == -1 && vx > 0) {
-				vx = 0;
-				maxVx = 0;
-				ax = 0;
-			}
 		}
 		break;
 	case MARIO_STATE_DIE:
