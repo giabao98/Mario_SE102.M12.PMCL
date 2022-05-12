@@ -14,6 +14,12 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
+void CAnimation::ResetAni()
+{
+	currentFrame = 0;
+	lastFrameTime = GetTickCount64();
+}
+
 void CAnimation::Render(float x, float y)
 {
 	ULONGLONG now = GetTickCount64();
