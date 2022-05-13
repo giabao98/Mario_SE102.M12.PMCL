@@ -10,14 +10,14 @@
 //#include "Koopas.h"
 
 
-class CPlayScene: public CScene
+class CPlayScene : public CScene
 {
-protected: 
+protected:
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;					
+	LPGAMEOBJECT player;
 
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> Bricks;
+	vector<LPGAMEOBJECT> bricks;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -28,8 +28,8 @@ protected:
 	void _ParseSection_MAP(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
-	
-public: 
+
+public:
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
@@ -46,18 +46,18 @@ public:
 		obj->GetPosition(BrickX, BrickY);
 
 		if (QBrick->readyInnitItem)
-		 {
-			if (QBrick->Item > 1)
+		{
+			if (QBrick->item > 1)
 			{
 				Mushroom* mushroom = new Mushroom(BrickX, BrickY);
 				mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
 				objects[index] = mushroom;
 				objects.push_back(QBrick);
 			}
-			else QBrick->InitCoin = true;
+			else QBrick->initCoin = true;
 
 			QBrick->innitItemSuccess = true;
-			
+
 		}
 	}
 

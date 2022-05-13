@@ -5,13 +5,13 @@
 #define TAIL_BBOX_HEIGHT 5
 
 class MarioTail :
-    public CGameObject
+	public CGameObject
 {
 public:
 	float ax;
 	float ay;
 
-	bool IsAttack;
+	bool isAttack;
 
 	DWORD attackTime;
 

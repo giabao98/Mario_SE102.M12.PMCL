@@ -6,7 +6,7 @@
 void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (state != KOOPAS_STATE_DIE_BY_SHELL)
-	if (!InShell) {
+	if (!inShell) {
 		top = y - KOOPAS_BBOX_HEIGHT / 2;
 		bottom = top + KOOPAS_BBOX_HEIGHT;
 	}
@@ -24,11 +24,11 @@ void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += KOOPAS_GRAVITY * dt;
 	if (state == KOOPAS_STATE_WALKING && level == SMART_KOOPAS)
 	{
-		if (vx > 0)NavBox->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
-		else NavBox->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
-		NavBox->Update(dt, coObjects);
+		if (vx > 0)navBox->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
+		else navBox->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
+		navBox->Update(dt, coObjects);
 		float navX, navY;
-		NavBox->GetPosition(navX, navY);
+		navBox->GetPosition(navX, navY);
 		if (navY - y >= KOOPAS_NAVBOX_DISTANCE)vx = -vx;
 		
 	}
@@ -42,7 +42,7 @@ void Koopas::Render()
 	else if (level == SMART_KOOPAS)GetRedKoopasAni(aniId);
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
-	//NavBox->Render();
+	//navBox->Render();
 }
 
 void Koopas::OnNoCollision(DWORD dt)
@@ -121,7 +121,7 @@ Koopas::Koopas(float x, float y, int Level):CGameObject(x,y)
 {
 	level = Level;
 	SetState(KOOPAS_STATE_WALKING);
-	NavBox = new NavigationBox(x, y);
+	navBox = new NavigationBox(x, y);
 }
 
 void Koopas::SetState(int state)
@@ -130,24 +130,24 @@ void Koopas::SetState(int state)
 	switch (state) {
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
-		IsAttack = true;
-		InShell = false;
+		isAttack = true;
+		inShell = false;
 		break;
 	case KOOPAS_STATE_INSHELL:
 		vx = 0;
-		InShell = true;
-		IsAttack = false;
+		inShell = true;
+		isAttack = false;
 		break;
 	case KOOPAS_STATE_INSHELL_ATTACK:
 		vx = nx*KOOPAS_WALKING_SPEED * 4;
-		InShell = true;
-		IsAttack = true;
+		inShell = true;
+		isAttack = true;
 		break;
 	case KOOPAS_STATE_DIE_BY_SHELL:
 		vx = nx * GOOMBA_DIEBYSHELL_VX;
 		vy = -GOOMBA_DIEBYSHELL_VY;
-		InShell = true;
-		IsAttack = false;
+		inShell = true;
+		isAttack = false;
 		break;
 	default:
 		break;

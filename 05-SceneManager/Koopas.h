@@ -33,9 +33,9 @@ class Koopas : public CGameObject
 {
 protected:
 
-	bool ParaKoopas;
+	bool paraKoopas;
 
-	bool InShell;
+	bool inShell;
 	DWORD phaseTime;
 
 	ULONGLONG die_start;
@@ -55,10 +55,10 @@ protected:
 	void GetKoopasAni(int& IdAni);
 	void GetRedKoopasAni(int& IdAni);
 public:
-	NavigationBox* NavBox;
+	NavigationBox* navBox;
 
 	int level;
-	bool IsAttack;
+	bool isAttack;
 	Koopas(float x, float y, int Level);
 	virtual void SetState(int state);
 };

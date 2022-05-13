@@ -164,19 +164,19 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
-	bool IsSlowFalling, IsFalling;
-	DWORD SlowFallingTime, FallingTime;
+	bool isSlowFalling, isFalling;
+	DWORD slowFallingTime, fallingTime;
 	bool isFly;
 	int speedStack;
-	
+
 	MarioTail* tail;
 
-	DWORD SpeedStackTime;
+	DWORD speedStackTime;
 
-	int level; 
+	int level;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
-	int coin; 
+	int coin;
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -185,12 +185,12 @@ class CMario : public CGameObject
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 
-	bool IsAttack;
-	DWORD AttackTime;
-	DWORD FlyingTime;
+	bool isAttack;
+	DWORD attackTime;
+	DWORD flyingTime;
 
-	bool IsKickKoopas;
-	DWORD KickKoopasTime;
+	bool isKickKoopas;
+	DWORD kickKoopasTime;
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRacoon();
@@ -205,15 +205,15 @@ public:
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
-		ay = MARIO_GRAVITY; 
-		isFlying = IsAttack = IsKickKoopas = false;
+		ay = MARIO_GRAVITY;
+		isFlying = isAttack = isKickKoopas = false;
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 		speedStack = 0;
-		AttackTime = SpeedStackTime = 0;
+		attackTime = speedStackTime = 0;
 		tail = new MarioTail();
 		level = MARIO_LEVEL_RACOON;
 	}
@@ -222,11 +222,11 @@ public:
 	void SetState(int state);
 
 	int IsCollidable()
-	{ 
-		return (state != MARIO_STATE_DIE); 
+	{
+		return (state != MARIO_STATE_DIE);
 	}
 
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
+	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt);
@@ -237,24 +237,24 @@ public:
 	void IncreaseSpeedStack() {
 		if (speedStack < MARIO_MAX_SPEED_STACK)
 		{
-			if (SpeedStackTime == 0)SpeedStackTime = GetTickCount64();
-			else if (GetTickCount64() - SpeedStackTime > MARIO_SPEEDSTACK_TIME)
+			if (speedStackTime == 0)speedStackTime = GetTickCount64();
+			else if (GetTickCount64() - speedStackTime > MARIO_SPEEDSTACK_TIME)
 			{
-				SpeedStackTime = 0;
+				speedStackTime = 0;
 				speedStack++;
 			}
 		}
 	}
 
 	void DecreaseSpeedStack() {
-			if (SpeedStackTime == 0)SpeedStackTime = GetTickCount64();
-			else if (GetTickCount64() - SpeedStackTime > MARIO_SPEEDSTACK_TIME)
-			{
-				SpeedStackTime = 0;
-				speedStack--;
-			}
+		if (speedStackTime == 0)speedStackTime = GetTickCount64();
+		else if (GetTickCount64() - speedStackTime > MARIO_SPEEDSTACK_TIME)
+		{
+			speedStackTime = 0;
+			speedStack--;
+		}
 	}
-	
+
 	int GetMarioLevel() {
 		return level;
 	}

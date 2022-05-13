@@ -24,19 +24,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else if (nx < 0 && vx > 0) { vx = 0; ax = 0; }
 	}
 
-	if (IsSlowFalling)
+	if (isSlowFalling)
 	{
-		if (GetTickCount64() - SlowFallingTime >= MARIO_SLOWFALLING_TIME)
+		if (GetTickCount64() - slowFallingTime >= MARIO_SLOWFALLING_TIME)
 		{
-			IsSlowFalling = false;
+			isSlowFalling = false;
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	if (IsFalling)
+	if (isFalling)
 	{
-		if (GetTickCount64() - FallingTime >= MARIO_SLOWFALLING_TIME)
+		if (GetTickCount64() - fallingTime >= MARIO_SLOWFALLING_TIME)
 		{
-			IsFalling = false;
+			isFalling = false;
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
@@ -56,16 +56,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	if (IsKickKoopas)
+	if (isKickKoopas)
 	{
-		if (GetTickCount64() - KickKoopasTime >= MARIO_KICK_KOOPAS_TIME)
+		if (GetTickCount64() - kickKoopasTime >= MARIO_KICK_KOOPAS_TIME)
 		{
-			IsKickKoopas = false;
+			isKickKoopas = false;
 		}
 	}
 	isOnPlatform = false;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	if (IsAttack)
+	if (isAttack)
 	{
 		if (nx > 0)
 			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 5);
@@ -74,9 +74,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 
 		tail->Update(dt, coObjects);
-		if (GetTickCount64() - AttackTime >= RACOON_ATTACK_TIME)
+		if (GetTickCount64() - attackTime >= RACOON_ATTACK_TIME)
 		{
-			IsAttack = false;
+			isAttack = false;
 		}
 	}
 
@@ -217,7 +217,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->IsAttack)
+			if (koopas->isAttack)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -336,7 +336,7 @@ int CMario::GetAniIdSmall()
 				}
 					
 			}
-	if (IsKickKoopas) {
+	if (isKickKoopas) {
 		if (nx > 0)
 			aniId = ID_ANI_SMALLMARIO_KICKKOOPAS_RIGHT;
 		else
@@ -422,14 +422,14 @@ int CMario::GetAniIdRacoon()
 				else if (ax == MARIO_ACCEL_SLOWING_DOWN_X)
 					aniId = ID_ANI_RACOON_WALKING_LEFT;
 			}
-	if (IsSlowFalling)
+	if (isSlowFalling)
 	{
 		if (nx > 0)
 			aniId = ID_ANI_MARIO_SLOWFALLING_RIGHT;
 		else
 			aniId = ID_ANI_MARIO_SLOWFALLING_LEFT;
 	}
-	if (IsKickKoopas) {
+	if (isKickKoopas) {
 		if (nx > 0)
 			aniId = ID_ANI_MARIO_KICKKOOPAS_RIGHT;
 		else
@@ -439,7 +439,7 @@ int CMario::GetAniIdRacoon()
 	if (aniId == -1) {
 		aniId = ID_ANI_RACOON_IDLE_RIGHT;
 	}
-	if (IsAttack)
+	if (isAttack)
 	{
 		if (level == MARIO_LEVEL_RACOON) {
 			if (nx > 0)aniId = ID_ANI_RACOON_ATTACK_RIGHT;
@@ -520,7 +520,7 @@ int CMario::GetAniIdBig()
 				else if (ax == MARIO_ACCEL_SLOWING_DOWN_X)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
-	if (IsKickKoopas) {
+	if (isKickKoopas) {
 		if (nx > 0)
 			aniId = ID_ANI_MARIO_KICKKOOPAS_RIGHT;
 		else
@@ -536,7 +536,7 @@ void CMario::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 
-	if (!IsAttack && level == MARIO_LEVEL_RACOON)
+	if (!isAttack && level == MARIO_LEVEL_RACOON)
 	{
 		animations->Get(ID_ANI_RACOON_ATTACK_LEFT)->ResetAni();
 		animations->Get(ID_ANI_RACOON_ATTACK_RIGHT)->ResetAni();
@@ -555,7 +555,7 @@ void CMario::Render()
 
 	//RenderBoundingBox();
 
-	if (IsAttack)tail->Render();
+	if (isAttack)tail->Render();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }
@@ -636,28 +636,28 @@ void CMario::SetState(int state)
 	case MARIO_STATE_KICKKOOPAS:
 		vx = 0;
 		ax = 0;
-		KickKoopasTime = GetTickCount64();
-		IsKickKoopas = true;
+		kickKoopasTime = GetTickCount64();
+		isKickKoopas = true;
 		break;
 	case MARIO_STATE_ATTACK:
-		IsAttack = true;
-		AttackTime = GetTickCount64();
+		isAttack = true;
+		attackTime = GetTickCount64();
 		break;
 	case MARIO_STATE_SLOW_FALLING:
 		ay = 0;
 		vy = MARIO_SLOW_FALLING_SPEED;
-		IsSlowFalling = true;
-		SlowFallingTime = GetTickCount64();
+		isSlowFalling = true;
+		slowFallingTime = GetTickCount64();
 		break;
 	case MARIO_STATE_FLYING:
 		vy = -0.1f;
 		ay = 0;
-		IsFalling = true;
-		FallingTime = GetTickCount64();
+		isFalling = true;
+		fallingTime = GetTickCount64();
 		if (!isFlying)
 		{
 			isFlying = true;
-			FlyingTime = GetTickCount64();
+			flyingTime = GetTickCount64();
 		}
 		break;
 	}

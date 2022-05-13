@@ -8,8 +8,8 @@ CGoomba::CGoomba(float x, float y, int Level):CGameObject(x, y)
 	die_start = -1;
 	SetState(GOOMBA_STATE_WALKING);
 	level = Level;
-	if (level == PARA_GOOMBA)ParaGoomba = true;
-	else ParaGoomba = false;
+	if (level == PARA_GOOMBA)paraGoomba = true;
+	else paraGoomba = false;
 	goombaPhase = 1;
 	phaseTime = 0;
 }
@@ -75,7 +75,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CGoomba::Render()
 {
 	int aniId = ID_ANI_GOOMBA_WALKING;
-	if (ParaGoomba)GetParaGoombaAni(aniId);
+	if (paraGoomba)GetParaGoombaAni(aniId);
 	else {
 		if (state == GOOMBA_STATE_DIE)
 		{

@@ -28,12 +28,12 @@ void FirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcAtatckEnemy();
 	}
 	if (state == FIRE_PIRANHAPLANT_STATE_UP) {
-		if (GetTickCount64() - CalcAtkTime >= 3000) {
+		if (GetTickCount64() - calcAtkTime >= 3000) {
 			SetState(FIRE_PIRANHAPLANT_STATE_DOWN);
 		}
 	}
 	else {
-		if (GetTickCount64() - CalcAtkTime >= 2000) {
+		if (GetTickCount64() - calcAtkTime >= 2000) {
 			SetState(FIRE_PIRANHAPLANT_STATE_UP);
 		}
 	}
@@ -84,11 +84,11 @@ void FirePiranhaPlant::SetState(int state)
 	{
 	case FIRE_PIRANHAPLANT_STATE_UP:
 		vy = -0.05;
-		CalcAtkTime = GetTickCount64();
+		calcAtkTime = GetTickCount64();
 		break;
 	case FIRE_PIRANHAPLANT_STATE_DOWN:
 		vy = 0.05;
-		CalcAtkTime = GetTickCount64();
+		calcAtkTime = GetTickCount64();
 		break;
 	default:
 		break;

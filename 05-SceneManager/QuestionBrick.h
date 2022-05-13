@@ -26,15 +26,15 @@ public:
 	int startY;
 	bool readyInnitItem;
 	bool innitItemSuccess;
-	int Item;
+	int item;
 	CCoin* coin;
-	bool InitCoin;
+	bool initCoin;
 	DWORD coinUpTime;
 
-	QuestionBrick(float x, float y, int item ) : CGameObject(x, y) {
+	QuestionBrick(float x, float y, int item) : CGameObject(x, y) {
 		startY = y;
-		InitCoin = readyInnitItem = innitItemSuccess = false;
-		Item = item;
+		initCoin = readyInnitItem = innitItemSuccess = false;
+		item = item;
 		coinUpTime = 0;
 	}
 	void Render();
@@ -45,7 +45,7 @@ public:
 		if (vy > 0 && y >= startY) {
 			SetState(QUESTION_BRICK_STATE_INNITED);
 		}
-		if (InitCoin)
+		if (initCoin)
 		{
 			if (coinUpTime == 0)
 			{
@@ -55,7 +55,7 @@ public:
 			}
 			else if (GetTickCount64() - coinUpTime >= 700) {
 				coinUpTime = 0;
-				InitCoin = false;
+				initCoin = false;
 			}
 			coin->Update(dt);
 		}
@@ -70,7 +70,7 @@ public:
 		b = t + BRICK_BBOX_HEIGHT;
 
 	};
-	
+
 	void SetState(int state) {
 		switch (state) {
 		case QUESTION_BRICK_STATE_START_INNIT:

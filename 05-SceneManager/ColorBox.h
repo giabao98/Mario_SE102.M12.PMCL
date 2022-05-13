@@ -3,23 +3,23 @@
 class ColorBox :
 	public CGameObject
 {
-	int Width;
-	int Height;
+	int width;
+	int height;
 public:
-	ColorBox(int W, int H)
+	ColorBox(int w, int h)
 	{
-		Width = W;
-		Height = H;
+		width = w;
+		height = h;
 		objType = 6;
 	}
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	{
-		left = x-Width/2;
-		top = y-Height/2;
-		right = left + Width;
-		bottom = top + Height;
+		left = x - width / 2;
+		top = y - height / 2;
+		right = left + width;
+		bottom = top + height;
 	}
-	virtual int GetWidth() { return Width; };
+	virtual int GetWidth() { return width; };
 	virtual void Render();
 	virtual void DirectBlocking(int& l, int& t, int& r, int& b) { l = 0; t = 1; b = 0; r = 0; }
 };

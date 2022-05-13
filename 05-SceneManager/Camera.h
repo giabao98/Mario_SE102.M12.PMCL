@@ -5,11 +5,11 @@
 #define SCREEN_HEIGHT 240
 class Camera
 {
-public:
-	float Mariovx, Mariovy=0, MarioY;
+private:
+	float mario_vx, mario_vy=0, mario_Y;
 	float cam_x, cam_y, cam_vx, cam_vy =0;
-	int AutoMove = 0;
-	bool IsFollowingMario;
+	int autoMove = 0;
+	bool isFollowingMario;
 public:
 
 	static Camera* __instance;
@@ -24,20 +24,19 @@ public:
 
 
 	void SetCamSpeed()
-
 	{
-		if (Mariovy < 0 && cam_y >= 0)
-			cam_vy = Mariovy;
+		if (mario_vy < 0 && cam_y >= 0)
+			cam_vy = mario_vy;
 		else {
 			if (cam_y <= 0)
 				cam_y = 0;
-			cam_vy = Mariovy*0.5;
+			cam_vy = mario_vy*0.5;
 		}
 		if (cam_vy > 0)
 		{
 			if (cam_y >= 240)
 			{
-				IsFollowingMario = false;
+				isFollowingMario = false;
 				cam_vy = 0;
 				cam_y = 240;
 			}

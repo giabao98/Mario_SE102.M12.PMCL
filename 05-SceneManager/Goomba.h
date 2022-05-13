@@ -44,7 +44,7 @@ protected:
 	float ax;				
 	float ay; 
 
-	bool ParaGoomba;
+	bool paraGoomba;
 
 	DWORD phaseTime;
 

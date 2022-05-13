@@ -13,9 +13,9 @@ Camera::Camera()
 
 void Camera::Update(DWORD dt)
 {
-	if (AutoMove < 1)
+	if (autoMove < 1)
 	{
-		if (IsFollowingMario)
+		if (isFollowingMario)
 		{
 			SetCamSpeed();
 			cam_y += cam_vy * dt;

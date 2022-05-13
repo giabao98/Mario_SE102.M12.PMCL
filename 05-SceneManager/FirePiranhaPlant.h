@@ -38,7 +38,7 @@ public:
 	bool isAttack;
 	FireBullet* fireBullet;
 	float enemyX, enemyY;
-	DWORD CalcAtkTime;
+	DWORD calcAtkTime;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

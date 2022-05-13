@@ -6,6 +6,6 @@ void QuestionBrick::Render()
 	if (innitItemSuccess) aniId = ID_ANI_QUESTION_BRICK_HAVEITEM;
 	else aniId = ID_ANI_QUESTION_BRICK_HAVENOITEM;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	if (InitCoin)coin->Render();
+	if (initCoin)coin->Render();
 	//RenderBoundingBox();
 }

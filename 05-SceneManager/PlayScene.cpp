@@ -111,8 +111,8 @@ void CPlayScene::_ParseSection_MAP(string line){
 	int checkWM = atoi(tokens[8].c_str());
 
 	map = new Map(IDtex, mapPath.c_str(), mapRow, mapColumn, tileRow, tileColumn, tileWidth, tileHeight);
-	if (checkWM != 0) map->IsWorldMap = true;
-	else map->IsWorldMap = false;
+	if (checkWM != 0) map->isWorldMap = true;
+	else map->isWorldMap = false;
 }
 
 

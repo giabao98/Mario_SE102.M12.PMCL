@@ -11,7 +11,7 @@ class NavigationBox :
 {
 
 public:
-	bool IsOnPlatform;
+	bool isOnPlatform;
 	NavigationBox(float x, float y) :CGameObject(x, y) {};
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

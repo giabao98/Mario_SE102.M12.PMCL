@@ -2,20 +2,20 @@
 #include "Camera.h"
 #include"debug.h"
 
-Map::Map(int ID, LPCWSTR FilePath_data, int Map_rows, int  Map_cols, int Num_row_read, int Num_col_read, int Tile_width, int Tile_height)
+Map::Map(int id, LPCWSTR filePath_data, int Map_rows, int  Map_cols, int num_row_read, int num_col_read, int Tile_width, int Tile_height)
 {
-	this->Id = ID;
+	this->id = id;
 
-	this->MapFilePath = FilePath_data;
+	this->mapFilePath = filePath_data;
 
-	this->Num_Rows = Map_rows;
-	this->Num_Cols = Map_cols;
+	this->numRows = Map_rows;
+	this->numCols = Map_cols;
 
-	this->num_row_read = Num_row_read;
-	this->num_col_read = Num_col_read;
+	this->numRowRead = num_row_read;
+	this->numColRead = num_col_read;
 
-	this->Tile_Width = Tile_width;
-	this->Tile_Height = Tile_height;
+	this->tileWidth = Tile_width;
+	this->tileHeight = Tile_height;
 
 	LoadMap();
 	Load();
@@ -23,15 +23,15 @@ Map::Map(int ID, LPCWSTR FilePath_data, int Map_rows, int  Map_cols, int Num_row
 void Map::Load()
 {
 	ifstream f;
-	f.open(MapFilePath);
+	f.open(mapFilePath);
 	if (f.fail())
 	{
 		f.close();
 		return;
 	}
-	for (int i = 0; i < Num_Rows; i++)
+	for (int i = 0; i < numRows; i++)
 	{
-		for (int j = 0; j < Num_Cols; j++)
+		for (int j = 0; j < numCols; j++)
 			f >> tilemap[i][j];
 	}
 
@@ -41,14 +41,14 @@ void Map::Load()
 void Map::LoadMap()
 {
 	CTextures* texture = CTextures::GetInstance();
-	LPTEXTURE texMap = texture->Get(Id);
+	LPTEXTURE texMap = texture->Get(id);
 	int id_sprite = 1;
-	for (UINT i = 0; i < num_row_read; i++)
+	for (UINT i = 0; i < numRowRead; i++)
 	{
-		for (UINT j = 0; j < num_col_read; j++)
+		for (UINT j = 0; j < numColRead; j++)
 		{
-			int id_Sprite = Id + id_sprite;
-			sprites->Add(id_Sprite, Tile_Width * j, Tile_Height * i, Tile_Width * (j + 1), Tile_Height * (i + 1), texMap);
+			int id_Sprite = id + id_sprite;
+			sprites->Add(id_Sprite, tileWidth * j, tileHeight * i, tileWidth * (j + 1), tileHeight * (i + 1), texMap);
 			id_sprite = id_sprite + 1;
 		}
 	}
@@ -57,7 +57,7 @@ void Map::LoadMap()
 
 void Map::Draw()
 {
-	if (!IsWorldMap)
+	if (!isWorldMap)
 	{
 		int firstcol = (int)Camera::GetInstance()->GetCamPosX() / 16;
 		if (firstcol < 0) { firstcol = 0; }
@@ -69,22 +69,22 @@ void Map::Draw()
 		{
 			for (UINT j = firstcol; j < lastcol; j++)
 			{
-				float x = Tile_Width * j+8;
-				float y = Tile_Height * i+8;
+				float x = tileWidth * j+8;
+				float y = tileHeight * i+8;
 				if (tilemap[i][j])
-				sprites->Get(tilemap[i][j] + Id)->Draw(x, y);
+				sprites->Get(tilemap[i][j] + id)->Draw(x, y);
 			}
 		}
 	}
 	/*else
 	{
-		for (UINT i = 0; i < Num_Rows; i++)
+		for (UINT i = 0; i < numRows; i++)
 		{
-			for (UINT j = 0; j <Num_Cols; j++)
+			for (UINT j = 0; j <numCols; j++)
 			{
-				float x = Tile_Width * j;
-				float y = Tile_Height * i;
-				sprites->Get(tilemap[i][j] + Id)->DrawHUD(x, y);
+				float x = tileWidth * j;
+				float y = tileHeight * i;
+				sprites->Get(tilemap[i][j] + id)->DrawHUD(x, y);
 			}
 		}
 	}*/
