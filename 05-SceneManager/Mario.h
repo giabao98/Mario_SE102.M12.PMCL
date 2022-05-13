@@ -29,7 +29,7 @@
 
 #define MARIO_SPEEDSTACK_TIME 250
 #define MARIO_KICK_KOOPAS_TIME 200
-#define MARIO_SLOWFALLING_TIME 200
+#define MARIO_SLOWFALLING_TIME 300
 #define RACOON_ATTACK_TIME 250
 
 
@@ -52,6 +52,8 @@
 
 #define MARIO_STATE_SLOW_FALLING	302
 #define MARIO_STATE_SLOW_FALLING_RELEASE	303
+
+#define MARIO_STATE_FLYING	900
 
 #pragma region ANIMATION_ID
 
@@ -162,8 +164,8 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
-	bool IsSlowFalling;
-	DWORD SlowFallingTime;
+	bool IsSlowFalling, IsFalling;
+	DWORD SlowFallingTime, FallingTime;
 	bool isFly;
 	int speedStack;
 	
@@ -185,6 +187,7 @@ class CMario : public CGameObject
 
 	bool IsAttack;
 	DWORD AttackTime;
+	DWORD FlyingTime;
 
 	bool IsKickKoopas;
 	DWORD KickKoopasTime;
@@ -193,6 +196,7 @@ class CMario : public CGameObject
 	int GetAniIdRacoon();
 
 public:
+	bool isFlying;
 	int untouchable;
 	bool CheckMarioIsOnPlatform() { return isOnPlatform; };
 
@@ -202,7 +206,7 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-		IsAttack = IsKickKoopas = false;
+		isFlying = IsAttack = IsKickKoopas = false;
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
@@ -254,5 +258,11 @@ public:
 	int GetMarioLevel() {
 		return level;
 	}
+
+	int GetSpeedStack()
+	{
+		return speedStack;
+	}
+
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
