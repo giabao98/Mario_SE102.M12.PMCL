@@ -76,10 +76,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isAttack)
 	{
 		if (nx > 0)
-			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 5);
+			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 3);
 		else
-			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 5);
-
+			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 3);
+		tail->nx = nx;
 
 		tail->Update(dt, coObjects);
 		if (GetTickCount64() - attackTime >= RACOON_ATTACK_TIME)
@@ -382,6 +382,11 @@ int CMario::GetAniIdRacoon()
 				else
 					aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
 			}
+		}
+		if (isFlying)
+		{
+			if (nx > 0)aniId = ID_ANI_RACOON_FLYING_RIGHT;
+			else aniId = ID_ANI_RACOON_FLYING_LEFT;
 		}
 	}
 	else

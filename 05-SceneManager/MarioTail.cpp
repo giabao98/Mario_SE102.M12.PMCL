@@ -49,4 +49,5 @@ void MarioTail::OnCollisionWithKoopas(LPGAMEOBJECT& obj)
 {
 	Koopas* koopas = dynamic_cast<Koopas*>(obj);
 	koopas->SetState(KOOPAS_STATE_DIE_BY_SHELL);
+	koopas->nx = nx;
 }
