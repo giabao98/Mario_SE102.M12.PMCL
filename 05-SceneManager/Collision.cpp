@@ -1,10 +1,9 @@
 #include "Collision.h"
 #include "GameObject.h"
 #include "Mushroom.h"
-
 #include "debug.h"
 
-#define BLOCK_PUSH_FACTOR 0.4f
+#define BLOCK_PUSH_FACTOR 0.2f
 
 CCollision* CCollision::__instance = NULL;
 
@@ -265,7 +264,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 		{
 			if (colY->t < colX->t)	// was collision on Y first ?
 			{
-				y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR/2;
+				y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
 				objSrc->SetPosition(x, y);
 
 				objSrc->OnCollisionWith(colY, dt);
@@ -341,7 +340,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 			if (colY != NULL)
 			{
 				x += dx;
-				y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR/2;
+				y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
 				objSrc->OnCollisionWith(colY, dt);
 			}
 			else // both colX & colY are NULL 
