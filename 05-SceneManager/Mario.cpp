@@ -40,6 +40,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
+	if (state == RACOON_STATE_IS_ATTACKED)
+	{
+		if (GetTickCount64() - effectTime > 600)
+		{
+			level = MARIO_LEVEL_BIG;
+			ay = MARIO_GRAVITY;
+			SetState(MARIO_STATE_IDLE);
+		}
+	}
 	if (isFlying)
 	{
 		if (GetTickCount64() - flyingTime >= 3000)
@@ -76,9 +85,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isAttack)
 	{
 		if (nx > 0)
-			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 3);
+			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 6);
 		else
-			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 3);
+			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 6);
 		tail->nx = nx;
 
 		tail->Update(dt, coObjects);
@@ -152,9 +161,10 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					//level = MARIO_LEVEL_SMALL;
+					SetState(RACOON_STATE_IS_ATTACKED);
 					StartUntouchable();
 				}
 				else
@@ -487,6 +497,10 @@ int CMario::GetAniIdRacoon()
 			else aniId = ID_ANI_RACOON_ATTACK_LEFT;
 		}
 	}
+	if (state == RACOON_STATE_IS_ATTACKED)
+	{
+		aniId = ID_ANI_RACOON_EFFECT_WHEN_ATTACKED;
+	}
 
 	return aniId;
 }
@@ -710,6 +724,10 @@ void CMario::SetState(int state)
 			isFlying = true;
 			flyingTime = GetTickCount64();
 		}
+		break;
+	case RACOON_STATE_IS_ATTACKED:
+		effectTime = GetTickCount64();
+		vx = vy = ax = ay = 0;
 		break;
 	}
 

@@ -54,6 +54,7 @@
 #define MARIO_STATE_SLOW_FALLING_RELEASE	303
 
 #define MARIO_STATE_FLYING	900
+#define RACOON_STATE_IS_ATTACKED	901
 
 #pragma region ANIMATION_ID
 
@@ -136,6 +137,8 @@
 
 #define ID_ANI_RACOON_FALLING_FLYING_RIGHT 1920
 #define ID_ANI_RACOON_FALLING_FLYING_LEFT 1921
+
+#define ID_ANI_RACOON_EFFECT_WHEN_ATTACKED	1922
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -175,6 +178,7 @@ class CMario : public CGameObject
 	MarioTail* tail;
 
 	DWORD speedStackTime;
+	DWORD effectTime;
 
 	int level;
 	ULONGLONG untouchable_start;
