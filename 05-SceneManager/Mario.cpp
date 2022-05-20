@@ -161,17 +161,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_BIG)
-				{
-					//level = MARIO_LEVEL_SMALL;
-					SetState(RACOON_STATE_IS_ATTACKED);
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+				HandleMarioIsAttacked();
 			}
 		}
 	}
@@ -237,16 +227,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			if (koopas->isAttack)
 			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+				HandleMarioIsAttacked();
 			}
 			else if (e->nx != 0)
 			{
@@ -272,16 +253,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
 	if (untouchable == 0)
 	{
-		if (level > MARIO_LEVEL_SMALL)
-		{
-			level = MARIO_LEVEL_SMALL;
-			StartUntouchable();
-		}
-		else
-		{
-			DebugOut(L">>> Mario DIE >>> \n");
-			SetState(MARIO_STATE_DIE);
-		}
+		HandleMarioIsAttacked();
 	}
 }
 
@@ -732,6 +704,24 @@ void CMario::SetState(int state)
 	}
 
 	CGameObject::SetState(state);
+}
+
+void CMario::HandleMarioIsAttacked()
+{
+	if (level > MARIO_LEVEL_BIG)
+	{
+		StartUntouchable();
+		SetState(RACOON_STATE_IS_ATTACKED);
+	}
+	else if (level == MARIO_LEVEL_BIG)
+	{
+		StartUntouchable();
+		level = MARIO_LEVEL_SMALL;
+	}
+	else if (level == MARIO_LEVEL_SMALL)
+	{
+		SetState(MARIO_STATE_DIE);
+	}
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
