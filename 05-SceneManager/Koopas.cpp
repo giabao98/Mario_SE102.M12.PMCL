@@ -5,32 +5,38 @@
 
 void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state != KOOPAS_STATE_DIE_BY_SHELL)
-	if (!inShell) {
-		top = y - KOOPAS_BBOX_HEIGHT / 2;
-		bottom = top + KOOPAS_BBOX_HEIGHT;
+	if (!isHolding)
+	{
+		if (state != KOOPAS_STATE_DIE_BY_SHELL)
+			if (!inShell) {
+				top = y - KOOPAS_BBOX_HEIGHT / 2;
+				bottom = top + KOOPAS_BBOX_HEIGHT;
+			}
+			else {
+				top = y - KOOPAS_BBOX_HIDDEN / 2;
+				bottom = top + KOOPAS_BBOX_HIDDEN;
+			}
+		left = x - KOOPAS_BBOX_WIDTH / 2;
+		right = left + KOOPAS_BBOX_WIDTH;
 	}
-	else {
-		top = y - KOOPAS_BBOX_HIDDEN/2;
-		bottom = top + KOOPAS_BBOX_HIDDEN;
-	}
-	left = x - KOOPAS_BBOX_WIDTH / 2;
-	right = left + KOOPAS_BBOX_WIDTH;
-	
 }
 
 void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += KOOPAS_GRAVITY * dt;
-	if (state == KOOPAS_STATE_WALKING && level == SMART_KOOPAS)
+	if (!isHolding)
 	{
-		if (vx > 0)navBox->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
-		else navBox->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
-		navBox->Update(dt, coObjects);
-		float navX, navY;
-		navBox->GetPosition(navX, navY);
-		if (navY - y >= KOOPAS_NAVBOX_DISTANCE)vx = -vx;
-		
+		vy += ay * dt;
+		if (state == KOOPAS_STATE_WALKING && level == SMART_KOOPAS)
+		{
+			if (vx > 0)navBox->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
+			else navBox->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
+			navBox->Update(dt, coObjects);
+			float navX, navY;
+			navBox->GetPosition(navX, navY);
+			if (navY - y >= KOOPAS_NAVBOX_DISTANCE)vx = -vx;
+
+		}
+		CCollision::GetInstance()->Process(this, dt, coObjects);
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
