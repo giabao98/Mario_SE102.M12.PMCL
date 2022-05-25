@@ -19,4 +19,5 @@ height	240
 12	textures\enemies2.png
 13	textures\plant.png
 20	textures\misc.png
+30	textures\pipe.png
 9000	map\Map1.png

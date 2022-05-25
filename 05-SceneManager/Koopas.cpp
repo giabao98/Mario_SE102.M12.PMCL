@@ -67,7 +67,8 @@ void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-
+	else if (dynamic_cast<Koopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void Koopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -91,6 +92,15 @@ void Koopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			if(goomba->GetState()!=GOOMBA_STATE_DIEBYSHELL)
 			goomba->SetState(GOOMBA_STATE_DIEBYSHELL);
 		}
+	}
+}
+
+void Koopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	Koopas* koopas = dynamic_cast<Koopas*>(e->obj);
+	if (koopas->state == KOOPAS_STATE_INSHELL_ATTACK) {
+		if (e->nx || e->ny)
+			SetState(KOOPAS_STATE_DIE_BY_SHELL);
 	}
 }
 

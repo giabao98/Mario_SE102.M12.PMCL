@@ -8,6 +8,7 @@ koopas.txt
 questionBrick.txt
 item.txt
 plants.txt
+pipe.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -73,6 +74,9 @@ plants.txt
 
 6	2168	392	48	48
 6	2200	344	48	144
+
+#FirePiranhaPlant
+21	368	392
 
 #Pipe
 10	368	392	32	48

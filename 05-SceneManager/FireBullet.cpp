@@ -30,15 +30,10 @@ void FireBullet::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 {
 	if (e->nx || e->ny) {
 		CMario* mario = dynamic_cast<CMario*>(e->obj);
-		if (mario->GetMarioLevel() == MARIO_LEVEL_BIG) {
-			if (mario->untouchable == 0)
-			{
-				mario->SetLevel(MARIO_LEVEL_SMALL);
-				mario->StartUntouchable();
-			}
+		if (mario->untouchable == 0)
+		{
+			mario->HandleMarioIsAttacked();
 		}
-		else if (mario->untouchable == 0)
-			mario->SetState(MARIO_STATE_DIE);
 	}
 }
 

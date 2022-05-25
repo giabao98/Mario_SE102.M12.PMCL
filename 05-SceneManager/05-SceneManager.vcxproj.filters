@@ -28,18 +28,6 @@
     <Filter Include="Spirte">
       <UniqueIdentifier>{029cde5e-806d-419e-a11b-d4ca7bf2df81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{4b02be45-7545-4f2f-b283-43f8eb9e7b7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{f7ce087d-d796-4893-9642-e4fb1107b9e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{748bf0c8-9b48-4677-8045-704ac81000b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{ffafcea8-8dfe-4839-9b31-65b1e9cf564a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine">
       <UniqueIdentifier>{b656051d-dc98-4b26-a28d-9432853a495c}</UniqueIdentifier>
     </Filter>
@@ -87,17 +75,11 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>GameEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Spirte</Filter>
@@ -107,12 +89,6 @@
     </ClCompile>
     <ClCompile Include="SampleKeyEventHandler.cpp">
       <Filter>GameEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="ColorBox.cpp">
-      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Brick</Filter>
@@ -142,6 +118,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MarioTail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
