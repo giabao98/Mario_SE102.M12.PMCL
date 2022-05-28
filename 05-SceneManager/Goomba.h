@@ -67,7 +67,7 @@ protected:
 				if (phaseTime == 0) {
 					phaseTime = GetTickCount64();
 				}
-				else if(GetTickCount64() - phaseTime > 2000) {
+				else if(GetTickCount64() - phaseTime > 1000) {
 					phaseTime = 0;
 					goombaPhase = GOOMBA_PHASE_JUMPING;
 				}

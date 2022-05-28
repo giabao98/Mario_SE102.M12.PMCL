@@ -699,8 +699,11 @@ void CMario::SetState(int state)
 		isKickKoopas = true;
 		break;
 	case MARIO_STATE_ATTACK:
-		isAttack = true;
-		attackTime = GetTickCount64();
+		if (level == MARIO_LEVEL_RACOON)
+		{
+			isAttack = true;
+			attackTime = GetTickCount64();
+		}
 		break;
 	case MARIO_STATE_SLOW_FALLING:
 		ay = 0;
@@ -723,7 +726,15 @@ void CMario::SetState(int state)
 		effectTime = GetTickCount64();
 		vx = vy = ax = ay = 0;
 		break;
+	case MARIO_STATE_RELEASE_KOOPAS:
+		isHoldingKoopas = false;
+		koopasHold->SetIsHolding(false);
+		koopasHold->nx = nx;
+		koopasHold->SetPosition(koopasHold->x + 3, y);
+		koopasHold->SetState(KOOPAS_STATE_INSHELL_ATTACK);
+		break;
 	}
+
 
 	CGameObject::SetState(state);
 }

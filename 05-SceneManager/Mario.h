@@ -57,6 +57,8 @@
 #define MARIO_STATE_FLYING	900
 #define RACOON_STATE_IS_ATTACKED	901
 
+#define MARIO_STATE_RELEASE_KOOPAS	1000
+
 #pragma region ANIMATION_ID
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
@@ -271,6 +273,10 @@ public:
 	int GetSpeedStack()
 	{
 		return speedStack;
+	}
+
+	bool CheckMarioHoldKoopas() {
+		return isHoldingKoopas;
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
