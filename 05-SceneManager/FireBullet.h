@@ -4,6 +4,8 @@
 #define FIREBULLET_BBOX_WIDTH	8
 #define FIREBULLET_BBOX_HEIGHT	8
 
+#define ID_ANI_FIREBULLET	1607200
+
 class FireBullet : public CGameObject
 {
 public:

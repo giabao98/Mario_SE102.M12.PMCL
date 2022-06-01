@@ -19,7 +19,8 @@ void FireBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void FireBullet::Render()
 {
-	RenderBoundingBox();
+	CAnimations* animations = CAnimations::GetInstance();
+	animations->Get(ID_ANI_FIREBULLET)->Render(x, y);
 }
 
 void FireBullet::OnNoCollision(DWORD dt)
