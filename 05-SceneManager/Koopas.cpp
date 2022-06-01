@@ -47,7 +47,7 @@ void Koopas::Render()
 	if (level == NORMAL_KOOPAS)GetKoopasAni(aniId);
 	else if (level == SMART_KOOPAS)GetRedKoopasAni(aniId);
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	//navBox->Render();
 }
 
@@ -138,6 +138,8 @@ Koopas::Koopas(float x, float y, int Level):CGameObject(x,y)
 	level = Level;
 	SetState(KOOPAS_STATE_WALKING);
 	navBox = new NavigationBox(x, y);
+	isAttackedByTail = isHolding = false;
+	ay = KOOPAS_GRAVITY;
 }
 
 void Koopas::SetState(int state)
@@ -164,6 +166,13 @@ void Koopas::SetState(int state)
 		vy = -GOOMBA_DIEBYSHELL_VY;
 		inShell = true;
 		isAttack = false;
+		break;
+	case KOOPAS_STATE_ATTACKED_BY_TAIL:
+		vx = nx * GOOMBA_DIEBYSHELL_VX;
+		vy = -GOOMBA_DIEBYSHELL_VY;
+		inShell = true;
+		isAttack = false;
+		isAttackedByTail = true;
 		break;
 	default:
 		break;

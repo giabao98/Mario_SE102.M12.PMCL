@@ -60,54 +60,9 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt);
 
-	void CalcGoombaMove() {
-		switch (goombaPhase) {
-			case GOOMBA_PHASE_WALKING:
-			{
-				if (phaseTime == 0) {
-					phaseTime = GetTickCount64();
-				}
-				else if(GetTickCount64() - phaseTime > 1000) {
-					phaseTime = 0;
-					goombaPhase = GOOMBA_PHASE_JUMPING;
-				}
-				break;
-			}
-			case GOOMBA_PHASE_JUMPING: {
-				if (phaseTime == 0) {
-					phaseTime = GetTickCount64();
-				}
-				else if (GetTickCount64() - phaseTime > 1500) {
-					phaseTime = 0;
-					goombaPhase = GOOMBA_PHASE_FLYING;
-				}
-				break;
-			}
-			case GOOMBA_PHASE_FLYING: {
-				if (phaseTime == 0) {
-					phaseTime = GetTickCount64();
-					vy = -GOOMBA_FLYING_SPEED;
-				}
-				else if (GetTickCount64() - phaseTime > 1000) {
-					phaseTime = 0;
-					goombaPhase = GOOMBA_PHASE_WALKING;
-				}
-				break;
-			}
-		}
-	}
+	void CalcGoombaMove();
 
-	void GetParaGoombaAni(int& idAni) {
-		if (state == GOOMBA_STATE_DIEBYSHELL)idAni = ID_ANI_PARAGOOMBA_DIEBYSHELL;
-		else if (level == PARA_GOOMBA)
-		{
-			if (goombaPhase == GOOMBA_PHASE_WALKING)idAni = ID_ANI_PARAGOOMBA_WALKING;
-			else if (goombaPhase == GOOMBA_PHASE_JUMPING)idAni = ID_ANI_PARAGOOMBA_JUMPING;
-			else if (goombaPhase == GOOMBA_PHASE_FLYING)idAni = ID_ANI_PARAGOOMBA_FLYING;
-		}
-		else if(state == GOOMBA_STATE_WALKING)idAni = ID_ANI_PARAGOOMBA_NOWING_WALKING;
-		else idAni = ID_ANI_PARAGOOMBA_DIE;
-	};
+	void GetParaGoombaAni(int& idAni);
 public: 	
 	int level, goombaPhase;
 	CGoomba(float x, float y, int Level);

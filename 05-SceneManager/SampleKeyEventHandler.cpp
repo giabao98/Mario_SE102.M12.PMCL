@@ -9,7 +9,7 @@
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (mario->GetState() != RACOON_STATE_IS_ATTACKED)
 	{
@@ -69,7 +69,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 			mario->SetState(MARIO_STATE_RELEASE_JUMP);
 			break;
 		case DIK_DOWN:
-			mario->SetState(MARIO_STATE_SIT_RELEASE);
+			if (mario->CheckIsSitting())
+				mario->SetState(MARIO_STATE_SIT_RELEASE);
 			break;
 		case DIK_A:
 			if (mario->CheckMarioHoldKoopas())
@@ -79,7 +80,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	}
 }
 
-void CSampleKeyHandler::KeyState(BYTE *states)
+void CSampleKeyHandler::KeyState(BYTE* states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
